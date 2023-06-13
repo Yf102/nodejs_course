@@ -1,6 +1,7 @@
 import express from 'express'
 import getGeoCode from "./utils/geocode.js";
 import getWeather from "./utils/weather.js";
+import rateLimit from "express-rate-limit";
 
 import path from 'path';
 import {fileURLToPath} from 'url';
@@ -17,12 +18,21 @@ const publicPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
 
+const apiRateLimit = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 1,
+    message: '',
+    statusCode: 429,
+    headers: true
+})
+
 // Setup handlebars engine and views location
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
 // setup static dir to serve
+app.use(apiRateLimit)
 app.use(express.static(publicPath, { extensions: ['html'] }))
 
 app.get('', (req, res) =>
