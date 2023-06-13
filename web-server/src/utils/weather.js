@@ -14,13 +14,14 @@ const getWeather = ({latitude = '', longitude = ''}, callback) => {
         if(error) {
             callback(undefined, error.info)
         } else {
-            const { temperature, feelslike, weather_descriptions } = current
+            const { temperature, feelslike, weather_descriptions, humidity } = current
             if(typeof callback === 'function') {
                 console.log('Callback in weather')
                 callback({
                     weather_descriptions: weather_descriptions[0],
                     temperature,
-                    feelslike
+                    feelslike,
+                    humidity
                 })
             }
         }

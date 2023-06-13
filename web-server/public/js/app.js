@@ -18,11 +18,14 @@ weatherForm.addEventListener('submit', (e) => {
                     error_p.textContent = data.error
                 } else {
                     const { address, forecast } = data
-                    const { feelslike, temperature, weather_descriptions: wd } = forecast
+                    const { feelslike, temperature, weather_descriptions: wd, humidity } = forecast
 
                     address_msg.textContent = address
-                    weather_descriptions.textContent =
-                        `${wd}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees out.`
+                    weather_descriptions.innerHTML =
+                        `<br /> ${wd}. <br />
+                        It is currently ${temperature} degrees out. <br />
+                        It feels like ${feelslike} degrees out. <br />
+                        Humidity is: ${humidity}`
                 }
             })
         })
