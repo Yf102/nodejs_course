@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "npm i && npm run build:css && node src/app.js",
-    "nodemon": "nodemon src/app.js -e js,hbs",
-    "build:css": "npx tailwindcss --postcss -i ./src/css/global.scss -o ./public/css/styles.css",
-    "tailwind": "npx tailwindcss --postcss -i ./styles/global.scss -o ./public/css/styles.css --watch",
     "dev": "concurrently --kill-others \"npm run tailwind \" \"npm run nodemon\"",
+    "nodemon": "nodemon src/app.js -e js,hbs",
+    "build:css": "npx tailwindcss --postcss -i ./styles/global.scss -o ./public/css/styles.css",
+    "tailwind": "npx tailwindcss --postcss -i ./styles/global.scss -o ./public/css/styles.css --watch",
     "heroku-postbuild": "npm run build:css"
   },
   "keywords": [],
