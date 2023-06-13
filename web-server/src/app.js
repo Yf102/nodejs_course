@@ -32,10 +32,10 @@ app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
 // setup static dir to serve
-app.use(apiRateLimit)
 app.use(express.static(publicPath, { extensions: ['html'] }))
 
-app.get('', (req, res) =>
+
+app.get('/', apiRateLimit, (req, res) =>
     res.render('index', {
         title: 'Weather',
         name: 'Filip'
@@ -57,7 +57,7 @@ app.get('/help', (req, res) => {
     })
 })
 
-app.get('/weather', (req, res) => {
+app.get('/weather', apiRateLimit, (req, res) => {
     const { address: searchTerm } = req.query
     if(!searchTerm) {
         return res.send({
