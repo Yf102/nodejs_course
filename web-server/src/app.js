@@ -19,9 +19,9 @@ const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
 
 const apiRateLimit = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 1,
-    message: '',
+    windowMs: 60000,
+    max: 5,
+    message: 'Too many requests',
     statusCode: 429,
     headers: true
 })
