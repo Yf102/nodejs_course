@@ -32,7 +32,7 @@ app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
 // setup static dir to serve
-app.use(apiRateLimit)
+// app.use(apiRateLimit)
 app.use(express.static(publicPath, { extensions: ['html'] }))
 
 app.get('', (req, res) =>

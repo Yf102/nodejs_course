@@ -1,3 +1,7 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
 body {
     color: #333333;
     font-family: Arial, serif;
@@ -41,7 +45,14 @@ header a {
     width: 250px;
 }
 
+.main-content {
+    .weather-form {
+        @apply flex flex-col;
+    }
+}
+
 input {
+    @apply w-full mb-3;
     border: 1px solid #cccccc;
     padding: 8px;
 }
