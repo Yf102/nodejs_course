@@ -46,12 +46,12 @@ const UserSchema: Schema = new Schema({
             }
         }
     }
-}, { strict: 'throw'})
+})
 
 const UserModel = model<IUser>('User', UserSchema);
 
 export {
-    UserModel,
     IUser,
-    UserType
+    UserType,
+    UserModel
 }
