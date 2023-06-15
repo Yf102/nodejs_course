@@ -6,10 +6,6 @@ import {ITask, TaskModel, TaskType} from "./models/task.model";
 const dbName = 'task-manager-api'
 const connectionUrl = `mongodb://127.0.0.1:27017/${dbName}`
 
-type GG = {
-    description: string
-    completed: boolean
-}
 async function main() {
     await mongoose.connect(connectionUrl)
 
