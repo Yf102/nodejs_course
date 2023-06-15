@@ -11,11 +11,14 @@ async function main() {
     const db = client.db(dbName);
     const collection = db.collection('tasks');
 
-    // const foundResult = await collection.findOne({ name: 'Go dancing at 19:30' });
-    // console.log(foundResult._id.getTimestamp(), foundResult)
+    // await collection.insertOne({desc: 'Go on a date', completed: false})
 
-    // const lastTask = await collection.findOne()
-    // console.log('lastTask', lastTask)
+    // await collection.updateMany({completed: false}, {$set: {completed: true}})
+    // await collection.updateOne({name: 'Tsvetan'}, {$set: { age: 29}})
+    // await collection.updateMany({age: 33}, {$set: {age: 32}})
+
+    // await collection.deleteOne({desc: 'Go on a date'})
+    await collection.deleteMany({completed: true})
 
     return 'done...'
 }
