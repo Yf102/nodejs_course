@@ -38,9 +38,9 @@ const updateUser = async (
   req: Request<{ id: string }, {}, {}>,
   res: Response
 ) => {
-  const { id } = req.params
-  await UserModel.updateOne({ id }, req.body)
-  await UserModel.findById(id)
+  const { id: _id } = req.params
+  await UserModel.updateOne({ _id }, req.body)
+  await UserModel.findById(_id)
     .then((updatedUser) => {
       res.status(200).json(updatedUser)
     })

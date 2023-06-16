@@ -38,9 +38,9 @@ const updateTask = async (
   req: Request<{ id: string }, {}, {}>,
   res: Response
 ) => {
-  const { id } = req.params
-  await TaskModel.updateOne({ id }, req.body)
-  await TaskModel.findById(id)
+  const { id: _id } = req.params
+  await TaskModel.updateOne({ _id }, { ...req.body })
+  await TaskModel.findById(_id)
     .then((updatedTask) => {
       res.status(200).json(updatedTask)
     })
