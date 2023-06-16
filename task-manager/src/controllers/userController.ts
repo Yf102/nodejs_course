@@ -7,7 +7,7 @@ const getAllUsers = async (req: Request<{}, {}, {}>, res: Response) => {
       res.status(200).json(allUsers)
     })
     .catch((e) => {
-      res.status(400).json(e)
+      res.status(500).json(e)
     })
 }
 
@@ -15,10 +15,14 @@ const getUser = async (req: Request, res: Response) => {
   const { id } = req.params
   await UserModel.findById(id)
     .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: 'not found' })
+      }
+
       res.status(200).json(user)
     })
     .catch((e) => {
-      res.status(400).json(e)
+      res.status(500).json(e)
     })
 }
 

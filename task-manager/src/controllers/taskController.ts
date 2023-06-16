@@ -7,7 +7,7 @@ const getAllTasks = async (req: Request<{}, {}, {}>, res: Response) => {
       res.status(200).json(allTasks)
     })
     .catch((e) => {
-      res.status(400).json(e)
+      res.status(500).json(e)
     })
 }
 
@@ -15,10 +15,13 @@ const getTask = async (req: Request, res: Response) => {
   const { id } = req.params
   await TaskModel.findById(id)
     .then((task) => {
+      if (!task) {
+        return res.status(404).json({ error: 'not found' })
+      }
       res.status(200).json(task)
     })
     .catch((e) => {
-      res.status(400).json(e)
+      res.status(500).json(e)
     })
 }
 
