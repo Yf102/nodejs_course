@@ -1,13 +1,13 @@
 import Database from '../src/db/mongoose'
-import { UserModel } from '../src/models/user.model'
+import { TaskModel } from '../src/models/task.model'
 
 const start = async () => {
   await Database()
 
-  UserModel.findByIdAndUpdate('648b38f85649470aef0b40ef', { age: 1 })
+  TaskModel.findByIdAndUpdate('6489bd872e2aaedae5f71cca', { completed: true })
     .then((user) => {
       console.log(user)
-      return UserModel.countDocuments({ age: 1 })
+      return TaskModel.countDocuments({ completed: false })
     })
     .then((result) => {
       console.log(result)
