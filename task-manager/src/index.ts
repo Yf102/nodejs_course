@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express'
 import Database from 'src/db/mongoose'
 import UserRouter from 'src/routes/api/users'
