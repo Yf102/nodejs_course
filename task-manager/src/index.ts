@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import TaskRouter from '@/routes/api/tasks'
 import express from 'express'
 import Database from 'src/db/mongoose'
 import UserRouter from 'src/routes/api/users'
@@ -9,6 +10,7 @@ const app = express()
 app.use(express.json())
 
 app.use('/api/users', UserRouter)
+app.use('/api/tasks', TaskRouter)
 
 const start = async () => {
   try {
