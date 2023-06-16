@@ -7,11 +7,11 @@
     "dev": "nodemon",
     "build": "rimraf ./build && NODE_ENV=production webpack",
     "start": "npm run build && node build/bundle.js",
-    "lint": "npm run type-check && npm run prettier",
+    "lint": "npm run type-check && npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
     "type-check": "tsc --noemit",
-    "prettier": "npx prettier **/**/*.ts **/**/*.js --check",
-    "prettier:fix": "npm run prettier --write"
+    "prettier:check": "prettier \"**/*.ts\" \"**/*.js\" --check",
+    "prettier:fix": "prettier \"**/*.ts\" \"**/*.js\" --write"
   },
   "keywords": [],
   "author": "",
