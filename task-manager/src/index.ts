@@ -1,4 +1,4 @@
-import express from 'express'
+import express, {Request} from 'express'
 import mongooseConnect from './db/mongoose'
 import {IUser, UserModel, UserType} from "./models/user.model";
 import mongoose from "mongoose";
@@ -26,7 +26,7 @@ app.get("/users/:id", async (req, res) => {
     })
 });
 
-app.post('/users', async (req, res) => {
+app.post('/users', async (req: Request<{}, {}, UserType>, res) => {
     const newUser: IUser = new UserModel<UserType>({ ...req.body })
     await newUser.save().then((insertedUser) => {
         res.status(201).json(insertedUser)
