@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm i && npm run build:css && node src/app.js",
+    "start": "npm i && npm run build:css && node -r dotenv/config src/app.js",
     "dev": "concurrently --kill-others \"npm run tailwind \" \"npm run nodemon\"",
-    "nodemon": "nodemon src/app.js -e js,hbs",
+    "nodemon": "nodemon -r dotenv/config src/app.js -e js,hbs",
     "build:css": "tailwindcss --postcss -i ./styles/global.scss -o ./public/css/styles.css",
     "tailwind": "tailwindcss --postcss -i ./styles/global.scss -o ./public/css/styles.css --watch",
     "heroku-postbuild": "npm run build:css"
@@ -19,6 +19,7 @@
     "autoprefixer": "^10.4.14",
     "axios": "^1.4.0",
     "chalk": "^5.2.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "hbs": "^4.2.0",
