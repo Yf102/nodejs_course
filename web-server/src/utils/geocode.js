@@ -1,8 +1,7 @@
 import axios from "axios"
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoicmFyZTE5MiIsImEiOiJjbGlteDc1bzQwdjlmM2VtbWZ1MW1oOWQ5In0.F91cICdQ1lJEZXLvhzZ9pA'
 const getGeoCode = (searchTerm, callback) => {
-    const mapboxUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchTerm}.json?access_token=${MAPBOX_TOKEN}&limit=1`
+    const mapboxUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchTerm}.json?access_token=${process.env.MAPBOX_TOKEN}&limit=1`
     axios.get(mapboxUrl).then(({data}) => {
         const searchResult = data.features[0]
         if(searchResult) {
