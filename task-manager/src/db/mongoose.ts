@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
+import * as console from 'console'
 import mongoose from 'mongoose'
+import * as process from 'process'
 const dbName = 'task-manager-api'
-const connectionUrl = `mongodb://127.0.0.1:27017/${dbName}`
+const mongoDB = process.env.DEV ? '127.0.0.1' : 'mongo'
+
+console.log(`CONNECTING TO ${mongoDB}`)
+const connectionUrl = `mongodb://${mongoDB}:27017/${dbName}`
 
 const Database = async () => {
   mongoose

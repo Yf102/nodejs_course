@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "run-mongo": "mongod --dbpath=/Users/filiphristov/mongodb-data",
-    "dev": "nodemon",
+    "run-mongo": "mongod --dbpath=./data/db",
+    "dev": "DEV=true nodemon",
     "build": "rimraf ./build && NODE_ENV=production webpack",
     "start": "npm run build && node build/bundle.js",
     "lint": "npm run type-check && npm run prettier:check",
