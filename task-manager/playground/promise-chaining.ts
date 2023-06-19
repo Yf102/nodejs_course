@@ -1,20 +1,16 @@
 import Database from '../src/db/mongoose'
 import { UserModel } from '../src/models/user.model'
 
-const start = async () => {
+const start = async (id: string, age: number) => {
   await Database()
-
-  UserModel.findByIdAndUpdate('648b38f85649470aef0b40ef', { age: 1 })
-    .then((user) => {
-      console.log(user)
-      return UserModel.countDocuments({ age: 1 })
-    })
-    .then((result) => {
-      console.log(result)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
+  await UserModel.findByIdAndUpdate(id, { age })
+  return UserModel.countDocuments({ age })
 }
 
-start()
+start('648eff6433153b5ac8637ef9', 30)
+  .then((result) => {
+    console.log('result', result)
+  })
+  .catch((e) => {
+    console.log('e', e)
+  })
