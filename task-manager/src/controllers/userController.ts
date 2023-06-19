@@ -24,54 +24,45 @@ const getUser = async (req: Request, res: Response) => {
   }
 }
 
-const createUser = async (req: Request<{}, {}, UserType>, res: Response) => {
-  const newUser: IUser = new UserModel<UserType>({ ...req.body })
-  try {
-    await newUser.save()
-    res.status(201).json(newUser)
-  } catch (e) {
-    res.status(400).json(e)
-  }
-}
-
-const updatePartial = async (
-  req: Request<{ id: string }, {}, Partial<UserType>>,
+const createUser = async (
+  req: Request<{}, {}, UserType & { password: string }>,
   res: Response
 ) => {
-  const { id } = req.params
+  const { password, ...rest } = req.body
+  if (!password) {
+    return res.sendStatus(400).json({ error: 'Password is required' })
+  }
+
+  const newUser: IUser = new UserModel<UserType>(rest)
+  newUser.setPassword(password)
+
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
-      runValidators: true,
-      new: true,
-    })
-    if (!updatedUser) {
-      return res.status(404).json({ error: 'Not found' })
-    }
-    res.status(200).json(updatedUser)
+    await newUser.save()
+    res.status(201).json({ success: true })
   } catch (e) {
     res.status(400).json(e)
   }
 }
 
 const updateUser = async (
-  req: Request<{ id: string }, {}, UserType>,
+  req: Request<{ id: string }, {}, UserType & { password: string }>,
   res: Response
 ) => {
-  const { id } = req.params
+  const { password, name, email, age } = req.body
+
   try {
-    const user = new UserModel<UserType>(req.body)
-    await user.validate()
-
-    const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
-      runValidators: true,
-      new: true,
-    })
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: 'Not found' })
+    const user = await UserModel.findById(req.params.id)
+    if (!user) {
+      return res.sendStatus(404).json({ error: 'Not found' })
     }
 
-    res.status(200).json(updatedUser)
+    if (name) user.name = name
+    if (email) user.email = email
+    if (age) user.age = age
+    if (password) user.setPassword(password)
+
+    await user.save()
+    res.status(200).json({ success: true })
   } catch (e) {
     res.status(400).json(e)
   }
@@ -93,11 +84,4 @@ const deleteUser = async (
   }
 }
 
-export {
-  createUser,
-  deleteUser,
-  getAllUsers,
-  getUser,
-  updatePartial,
-  updateUser,
-}
+export { createUser, deleteUser, getAllUsers, getUser, updateUser }

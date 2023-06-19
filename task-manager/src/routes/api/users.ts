@@ -4,7 +4,6 @@ import {
   deleteUser,
   getAllUsers,
   getUser,
-  updatePartial,
   updateUser,
 } from 'src/controllers/userController'
 
@@ -12,8 +11,7 @@ const UserRouter = Router()
   .get('', getAllUsers)
   .get('/:id', getUser)
   .post('/', createUser)
-  .put('/:id', updateUser)
-  .patch('/:id', updatePartial)
+  .patch('/:id', updateUser)
   .delete('/:id', deleteUser)
 
 export default UserRouter
