@@ -11,7 +11,7 @@ const TaskRouter = Router()
   .get('', getAllTasks)
   .get('/:id', getTask)
   .post('/', createTask)
-  .put('/:id', updateTask)
+  .patch('/:id', updateTask)
   .delete('/:id', deleteTask)
 
 export default TaskRouter
