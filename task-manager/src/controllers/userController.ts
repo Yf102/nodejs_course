@@ -81,7 +81,7 @@ const deleteUser = async (
 ) => {
   const { id } = req.params
   try {
-    const deletedUser = await UserModel.findByIdAndDelete(id)
+    const deletedUser = await UserModel.findByIdAndDelete(id, { new: true })
     res.status(200).json(deletedUser)
   } catch (e) {
     res.status(400).json(e)
