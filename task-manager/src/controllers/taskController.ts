@@ -59,6 +59,9 @@ const deleteTask = async (
   const { id } = req.params
   try {
     const deletedTask = await TaskModel.findByIdAndDelete(id)
+    if (!deletedTask) {
+      return res.status(404).json({ error: 'Not found' })
+    }
     res.status(200).json(deletedTask)
   } catch (e) {
     res.status(400).json(e)

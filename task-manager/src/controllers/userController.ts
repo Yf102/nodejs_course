@@ -84,6 +84,9 @@ const deleteUser = async (
   const { id } = req.params
   try {
     const deletedUser = await UserModel.findByIdAndDelete(id, { new: true })
+    if (!deletedUser) {
+      return res.status(404).json({ error: 'Not found' })
+    }
     res.status(200).json(deletedUser)
   } catch (e) {
     res.status(400).json(e)
