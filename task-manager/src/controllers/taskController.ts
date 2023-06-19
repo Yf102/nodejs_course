@@ -38,15 +38,20 @@ const updateTask = async (
   res: Response
 ) => {
   const { id } = req.params
+  const { description, completed } = req.body
   try {
-    const updatedTask = await TaskModel.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    })
-    if (!updatedTask) {
+    const task = await TaskModel.findById(id)
+
+    if (!task) {
       return res.status(404).json({ error: 'Not found' })
     }
-    res.status(200).json(updatedTask)
+
+    if (description) task.description = description
+    if (completed) task.completed = completed
+
+    await task.save()
+
+    res.status(200).json({ success: true })
   } catch (e) {
     res.status(400).json(e)
   }
