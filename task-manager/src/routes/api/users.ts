@@ -4,6 +4,7 @@ import {
   deleteUser,
   getAllUsers,
   getUser,
+  loginUser,
   updateUser,
 } from 'src/controllers/userController'
 
@@ -13,5 +14,6 @@ const UserRouter = Router()
   .post('/', createUser)
   .patch('/:id', updateUser)
   .delete('/:id', deleteUser)
+  .post('/login', loginUser)
 
 export default UserRouter
