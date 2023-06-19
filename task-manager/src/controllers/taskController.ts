@@ -37,13 +37,12 @@ const updateTask = async (
   req: Request<{ id: string }, {}, TaskType>,
   res: Response
 ) => {
-  const { id: _id } = req.params
+  const { id } = req.params
   try {
-    const updatedTask = await TaskModel.updateOne(
-      { _id },
-      { ...req.body },
-      { new: true, runValidators: true }
-    )
+    const updatedTask = await TaskModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    })
     if (!updatedTask) {
       return res.status(404).json({ error: 'Not found' })
     }
