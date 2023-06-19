@@ -38,20 +38,19 @@ const updatePartial = async (
   req: Request<{ id: string }, {}, Partial<UserType>>,
   res: Response
 ) => {
+  const { id } = req.params
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
+    const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
+      runValidators: true,
+      new: true,
+    })
     if (!updatedUser) {
       return res.status(404).json({ error: 'Not found' })
     }
     res.status(200).json(updatedUser)
-  } catch (e) {}
+  } catch (e) {
+    res.status(400).json(e)
+  }
 }
 
 const updateUser = async (
@@ -60,6 +59,9 @@ const updateUser = async (
 ) => {
   const { id } = req.params
   try {
+    const user = new UserModel<UserType>(req.body)
+    await user.validate()
+
     const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
       runValidators: true,
       new: true,
