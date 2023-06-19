@@ -89,16 +89,12 @@ const loginUser = async (
   res: Response
 ) => {
   const { email, password } = req.body
-  // Find user with requested email
-  const user = await UserModel.findOne({ email })
-  if (!user) {
-    return res.status(404).json({ error: 'Not found' })
+  try {
+    await UserModel.findByCredentials(email, password)
+    res.status(201).json({ success: true })
+  } catch (e) {
+    res.status(400).send({ error: true, e })
   }
-
-  if (!user.validPassword(password)) {
-    return res.status(400).send({ message: 'Wrong Password' })
-  }
-
-  return res.status(201).send({ success: true, message: 'User Logged In' })
 }
+
 export { createUser, deleteUser, getAllUsers, getUser, loginUser, updateUser }

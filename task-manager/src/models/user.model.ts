@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Document, model, Schema } from 'mongoose'
+import { Document, Model, Schema, model } from 'mongoose'
 import validator from 'validator'
 
 interface UserType {
@@ -12,6 +12,9 @@ interface IUser extends UserType, Document {
   salt: string
   setPassword: (password: string) => void
   validPassword: (password: string) => boolean
+}
+interface IUserModel extends Model<IUser> {
+  findByCredentials(email: string, password: string): Promise<IUser | null>
 }
 
 const UserSchema: Schema = new Schema({
@@ -31,6 +34,7 @@ const UserSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     lowercase: true,
     validate(value: string) {
@@ -49,6 +53,24 @@ const UserSchema: Schema = new Schema({
     },
   },
 })
+
+UserSchema.statics.findByCredentials = async (
+  email: string,
+  password: string
+): Promise<IUser | null> => {
+  const user = await UserModel.findOne({ email })
+  if (!user) {
+    throw new Error('Invalid credentials')
+  }
+
+  // Perform password comparison or any other logic to verify credentials
+  const isMatch = user.validPassword(password)
+  if (!isMatch) {
+    throw new Error('Invalid credentials')
+  }
+
+  return user
+}
 
 // Method to set salt and hash the password for a user
 // setPassword method first creates a salt unique for every user
@@ -85,6 +107,6 @@ UserSchema.methods.validPassword = function (password: string) {
     .toString(`hex`)
   return this.hash === hash
 }
-const UserModel = model<IUser>('User', UserSchema)
+const UserModel = model<IUser, IUserModel>('User', UserSchema)
 
 export { IUser, UserModel, UserType }
