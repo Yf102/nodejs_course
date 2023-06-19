@@ -34,14 +34,41 @@ const createUser = async (req: Request<{}, {}, UserType>, res: Response) => {
   }
 }
 
-const updateUser = async (
-  req: Request<{ id: string }, {}, {}>,
+const updatePartial = async (
+  req: Request<{ id: string }, {}, Partial<UserType>>,
   res: Response
 ) => {
-  const { id: _id } = req.params
   try {
-    await UserModel.updateOne({ _id }, req.body)
-    const updatedUser = await UserModel.findById(_id)
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'Not found' })
+    }
+    res.status(200).json(updatedUser)
+  } catch (e) {}
+}
+
+const updateUser = async (
+  req: Request<{ id: string }, {}, UserType>,
+  res: Response
+) => {
+  const { id } = req.params
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
+      runValidators: true,
+      new: true,
+    })
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'Not found' })
+    }
+
     res.status(200).json(updatedUser)
   } catch (e) {
     res.status(400).json(e)
@@ -61,4 +88,11 @@ const deleteUser = async (
   }
 }
 
-export { createUser, deleteUser, getAllUsers, getUser, updateUser }
+export {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  updatePartial,
+  updateUser,
+}
