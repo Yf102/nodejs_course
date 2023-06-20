@@ -90,8 +90,9 @@ const loginUser = async (
 ) => {
   const { email, password } = req.body
   try {
-    await UserModel.findByCredentials(email, password)
-    res.status(201).json({ success: true })
+    const user = await UserModel.findByCredentials(email, password)
+    const token = await user?.generateAuthToken()
+    res.status(201).json({ success: true, user, token })
   } catch (e) {
     res.status(400).send({ error: true, e })
   }

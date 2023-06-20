@@ -1,17 +1,21 @@
 import crypto from 'crypto'
-import { Document, Model, Schema, model } from 'mongoose'
+import jwt from 'jsonwebtoken'
+import { Document, Model, model, Schema } from 'mongoose'
+import * as process from 'process'
 import validator from 'validator'
 
 interface UserType {
   name: string
   email: string
   age: number
+  tokens: { token: string }[]
 }
 interface IUser extends UserType, Document {
   hash: string
   salt: string
   setPassword: (password: string) => void
   validPassword: (password: string) => boolean
+  generateAuthToken: () => string
 }
 interface IUserModel extends Model<IUser> {
   findByCredentials(email: string, password: string): Promise<IUser | null>
@@ -52,6 +56,14 @@ const UserSchema: Schema = new Schema({
       }
     },
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 })
 
 UserSchema.statics.findByCredentials = async (
@@ -91,22 +103,25 @@ UserSchema.methods.setPassword = function (password: string) {
     .toString(`hex`)
 }
 
-// Method to check the entered password is correct or not
-// valid password method checks whether the user
-// password is correct or not
-// It takes the user password from the request
-// and salt from user database entry
-// It then hashes user password and salt
-// then checks if this generated hash is equal
-// to user's hash in the database or not
-// If the user's hash is equal to generated hash
-// then the password is correct otherwise not
 UserSchema.methods.validPassword = function (password: string) {
   const hash = crypto
     .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
     .toString(`hex`)
   return this.hash === hash
 }
+
+UserSchema.methods.generateAuthToken = async function () {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('Cannot login')
+  }
+
+  const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET)
+  this.tokens = this.tokens.concat({ token })
+  await this.save()
+
+  return token
+}
+
 const UserModel = model<IUser, IUserModel>('User', UserSchema)
 
 export { IUser, UserModel, UserType }

@@ -4,9 +4,9 @@
   "description": "",
   "scripts": {
     "run-mongo": "mongod --dbpath=./data/db",
-    "dev": "DEV=true nodemon -r dotenv/config",
+    "dev": "DEV=true nodemon",
     "build": "rimraf ./build && NODE_ENV=production webpack",
-    "start": "npm run build && node -r dotenv/config build/bundle.js",
+    "start": "npm run build && node build/bundle.js",
     "lint": "npm run type-check && npm run prettier:check",
     "lint:fix": "npm run prettier:fix",
     "type-check": "tsc --noemit",
@@ -17,10 +17,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/mongoose": "^5.11.97",
     "@types/validator": "^13.7.17",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.6.0",
     "mongoose": "^7.3.0",
     "validator": "^13.9.0"
