@@ -1,36 +1,24 @@
 import { Request, Response } from 'express'
+import CustomError from 'src/errors/CustomError'
 import { ITask, TaskModel, TaskType } from 'src/models/task.model'
 
 const getAllTasks = async (req: Request<{}, {}, {}>, res: Response) => {
-  try {
-    const tasks = await TaskModel.find()
-    res.status(200).json(tasks)
-  } catch (e) {
-    res.status(500).json(e)
-  }
+  const tasks = await TaskModel.find()
+  res.status(200).json(tasks)
 }
 
 const getTask = async (req: Request, res: Response) => {
-  const { id } = req.params
-  try {
-    const task = await TaskModel.findById(id)
-    if (!task) {
-      return res.status(404).json({ error: 'not found' })
-    }
-    res.status(200).json(task)
-  } catch (e) {
-    res.status(500).json(e)
+  const task = await TaskModel.findById(req.params.id)
+  if (!task) {
+    throw new CustomError('Not found', 404)
   }
+  res.status(200).json(task)
 }
 
 const createTask = async (req: Request<{}, {}, TaskType>, res: Response) => {
   const newTask: ITask = new TaskModel<TaskType>({ ...req.body })
-  try {
-    const insertedTask = await newTask.save()
-    res.status(201).json(insertedTask)
-  } catch (e) {
-    res.status(400).json(e)
-  }
+  const insertedTask = await newTask.save()
+  res.status(201).json(insertedTask)
 }
 
 const updateTask = async (
@@ -39,22 +27,19 @@ const updateTask = async (
 ) => {
   const { id } = req.params
   const { description, completed } = req.body
-  try {
-    const task = await TaskModel.findById(id)
 
-    if (!task) {
-      return res.status(404).json({ error: 'Not found' })
-    }
+  const task = await TaskModel.findById(id)
 
-    if (description) task.description = description
-    if (completed) task.completed = completed
-
-    await task.save()
-
-    res.status(200).json({ success: true })
-  } catch (e) {
-    res.status(400).json(e)
+  if (!task) {
+    throw new CustomError('Not found', 404)
   }
+
+  if (description) task.description = description
+  if (completed) task.completed = completed
+
+  await task.save()
+
+  res.status(200).json({ success: true })
 }
 
 const deleteTask = async (
@@ -62,15 +47,11 @@ const deleteTask = async (
   res: Response
 ) => {
   const { id } = req.params
-  try {
-    const deletedTask = await TaskModel.findByIdAndDelete(id)
-    if (!deletedTask) {
-      return res.status(404).json({ error: 'Not found' })
-    }
-    res.status(200).json(deletedTask)
-  } catch (e) {
-    res.status(400).json(e)
+  const deletedTask = await TaskModel.findByIdAndDelete(id)
+  if (!deletedTask) {
+    throw new CustomError('Not found', 404)
   }
+  res.status(200).json(deletedTask)
 }
 
 export { createTask, deleteTask, getAllTasks, getTask, updateTask }

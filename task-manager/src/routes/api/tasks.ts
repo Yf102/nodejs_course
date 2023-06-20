@@ -1,11 +1,12 @@
+import { Router } from 'express'
 import {
   createTask,
   deleteTask,
   getAllTasks,
   getTask,
   updateTask,
-} from '@/controllers/taskController'
-import { Router } from 'express'
+} from 'src/controllers/taskController'
+import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 
 const TaskRouter = Router()
   .get('', getAllTasks)
@@ -14,4 +15,4 @@ const TaskRouter = Router()
   .patch('/:id', updateTask)
   .delete('/:id', deleteTask)
 
-export default TaskRouter
+export default applyErrorHandlingMiddleware(TaskRouter)

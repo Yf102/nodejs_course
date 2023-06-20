@@ -7,6 +7,7 @@ import {
   loginUser,
   updateUser,
 } from 'src/controllers/userController'
+import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 
 const UserRouter = Router()
   .get('', getAllUsers)
@@ -16,4 +17,4 @@ const UserRouter = Router()
   .delete('/:id', deleteUser)
   .post('/login', loginUser)
 
-export default UserRouter
+export default applyErrorHandlingMiddleware(UserRouter)
