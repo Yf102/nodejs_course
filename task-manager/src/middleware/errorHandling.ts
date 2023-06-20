@@ -1,6 +1,5 @@
 import { Request, RequestHandler, Response, Router } from 'express'
 
-import * as console from 'console'
 import { NextFunction } from 'express'
 import CustomError from 'src/errors/CustomError'
 
@@ -11,7 +10,6 @@ const errorMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    console.log(err)
     // TODO: Add file logging if required
     const _err = {
       statusCode: err.statusCode ? err.statusCode : 500,
