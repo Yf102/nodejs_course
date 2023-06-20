@@ -22,6 +22,8 @@ const errorMiddleware = async (
   }
 }
 
+// This is required as error middleware handling doesn't catch async functions
+// TODO: This will be fixed with express 5
 // Wrap a route handler with try-catch block using error handling middleware
 const wrapWithTryCatch = (controller: RequestHandler): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
