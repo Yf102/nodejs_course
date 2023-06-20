@@ -37,8 +37,8 @@ const createUser = async (
   newUser.setPassword(password)
 
   try {
-    await newUser.save()
-    res.status(201).json({ success: true })
+    const token = await newUser?.generateAuthToken()
+    res.status(201).json({ success: true, token })
   } catch (e) {
     res.status(400).json(e)
   }
