@@ -37,6 +37,7 @@ const createUser = async (
   newUser.setPassword(password)
 
   try {
+    await newUser.save()
     const token = await newUser?.generateAuthToken()
     res.status(201).json({ success: true, token })
   } catch (e) {
