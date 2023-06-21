@@ -1,9 +1,15 @@
+type CustomErrorType = {
+  msg: string
+  code: number
+}
 class CustomError extends Error {
-  statusCode: number
+  code: number
+  msg: string
 
-  constructor(message: string, statusCode: number) {
-    super(message)
-    this.statusCode = statusCode
+  constructor({ msg, code }: CustomErrorType) {
+    super()
+    this.msg = msg
+    this.code = code
   }
 }
 

@@ -1,6 +1,11 @@
-import { Request, RequestHandler, Response, Router } from 'express'
-
-import { NextFunction } from 'express'
+import {
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+  Router,
+} from 'express'
+import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 
 const errorMiddleware = async (
@@ -10,13 +15,15 @@ const errorMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    // TODO: Add file logging if required
-    const _err = {
-      statusCode: err.statusCode ? err.statusCode : 500,
-      msg: err.statusCode ? err.message : 'Internal server error',
+    if (!err.code) {
+      // eslint-disable-next-line no-console
+      console.log(err)
     }
 
-    res.status(_err.statusCode).json({ error: _err.msg })
+    // TODO: Add file logging if required
+    const _err = err.code ? err : ServerError.InternalServerError
+
+    res.status(_err.code).json({ error: _err.msg })
   } catch (err) {
     next(err)
   }
@@ -46,4 +53,4 @@ const applyErrorHandlingMiddleware = (router: Router) => {
   return router
 }
 
-export { applyErrorHandlingMiddleware, errorMiddleware }
+export { applyErrorHandlingMiddleware, errorMiddleware, wrapWithTryCatch }

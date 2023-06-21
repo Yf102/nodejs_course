@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import { ITask, TaskModel, TaskType } from 'src/models/task.model'
 
@@ -10,7 +11,7 @@ const getAllTasks = async (req: Request<{}, {}, {}>, res: Response) => {
 const getTask = async (req: Request, res: Response) => {
   const task = await TaskModel.findById(req.params.id)
   if (!task) {
-    throw new CustomError('Not found', 404)
+    throw new CustomError(ServerError.NotFound)
   }
   res.status(200).json(task)
 }
@@ -31,7 +32,7 @@ const updateTask = async (
   const task = await TaskModel.findById(id)
 
   if (!task) {
-    throw new CustomError('Not found', 404)
+    throw new CustomError(ServerError.NotFound)
   }
 
   if (description) task.description = description
@@ -49,7 +50,7 @@ const deleteTask = async (
   const { id } = req.params
   const deletedTask = await TaskModel.findByIdAndDelete(id)
   if (!deletedTask) {
-    throw new CustomError('Not found', 404)
+    throw new CustomError(ServerError.NotFound)
   }
   res.status(200).json(deletedTask)
 }

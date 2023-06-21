@@ -7,14 +7,15 @@ import {
   loginUser,
   updateUser,
 } from 'src/controllers/userController'
+import AuthMiddleware from 'src/middleware/auth'
 import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 
 const UserRouter = Router()
-  .get('', getAllUsers)
-  .get('/:id', getUser)
+  .get('/me', AuthMiddleware, getAllUsers)
+  .get('/:id', AuthMiddleware, getUser)
   .post('/', createUser)
-  .patch('/:id', updateUser)
-  .delete('/:id', deleteUser)
+  .patch('/:id', AuthMiddleware, updateUser)
+  .delete('/:id', AuthMiddleware, deleteUser)
   .post('/login', loginUser)
 
 export default applyErrorHandlingMiddleware(UserRouter)

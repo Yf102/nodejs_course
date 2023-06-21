@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { Document, Model, model, Schema } from 'mongoose'
 import * as process from 'process'
+import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import validator from 'validator'
 
@@ -73,13 +74,13 @@ UserSchema.statics.findByCredentials = async (
 ): Promise<IUser | null> => {
   const user = await UserModel.findOne({ email })
   if (!user) {
-    throw new CustomError('Invalid credentials', 400)
+    throw new CustomError(ServerError.InvalidCredentials)
   }
 
   // Perform password comparison or any other logic to verify credentials
   const isMatch = user.validPassword(password)
   if (!isMatch) {
-    throw new CustomError('Invalid credentials', 400)
+    throw new CustomError(ServerError.InvalidCredentials)
   }
 
   return user
@@ -113,7 +114,7 @@ UserSchema.methods.validPassword = function (password: string) {
 
 UserSchema.methods.generateAuthToken = async function () {
   if (!process.env.JWT_SECRET) {
-    throw new CustomError('Internal Server Error', 400)
+    throw new CustomError(ServerError.InternalServerError)
   }
 
   const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET)
