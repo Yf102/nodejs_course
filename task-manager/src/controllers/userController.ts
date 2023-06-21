@@ -8,49 +8,29 @@ const getLoggedInUser = async (req: UserRequestType, res: Response) => {
   res.status(200).json(req.user)
 }
 
-const getUser = async (
-  req: UserRequestType<{ id: string }, {}, {}>,
-  res: Response
-) => {
-  const { id } = req.params
-  const user = await UserModel.findById(id)
-  if (!user) {
-    throw new CustomError(ServerError.NotFound)
-  }
-
-  res.status(200).json(user)
-}
-
 const updateUser = async (
-  req: UserRequestType<{ id: string }, {}, UserType & { password: string }>,
+  req: UserRequestType<{}, {}, UserType & { password: string }>,
   res: Response
 ) => {
   const { password, name, email, age } = req.body
 
-  const user = await UserModel.findById(req.params.id)
-  if (!user) {
+  // const user = await UserModel.findById(req.params.id)
+  if (!req.user) {
     throw new CustomError(ServerError.NotFound)
   }
 
-  if (name) user.name = name
-  if (email) user.email = email
-  if (age) user.age = age
-  if (password) user.setPassword(password)
+  if (name) req.user.name = name
+  if (email) req.user.email = email
+  if (age) req.user.age = age
+  if (password) req.user.setPassword(password)
 
-  await user.save()
-  res.status(200).json({ success: true })
+  await req.user.save()
+  res.status(200).json({ success: true, user: req.user })
 }
 
-const deleteUser = async (
-  req: UserRequestType<{ id: string }, {}, {}>,
-  res: Response
-) => {
-  const { id } = req.params
-  const deletedUser = await UserModel.findByIdAndDelete(id, { new: true })
-  if (!deletedUser) {
-    throw new CustomError(ServerError.NotFound)
-  }
-  res.status(200).json(deletedUser)
+const deleteUser = async (req: UserRequestType, res: Response) => {
+  await req.user?.deleteOne()
+  res.status(200).json({ success: true })
 }
 
 const loginUser = async (
@@ -106,7 +86,6 @@ export {
   createUser,
   deleteUser,
   getLoggedInUser,
-  getUser,
   logOutUser,
   loginUser,
   logoutUserAll,

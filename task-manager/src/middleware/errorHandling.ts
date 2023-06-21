@@ -23,7 +23,7 @@ const errorMiddleware = async (
     // TODO: Add file logging if required
     const _err = err.code ? err : ServerError.InternalServerError
 
-    res.status(_err.code).json({ error: _err.msg })
+    res.status(_err.code).json({ error: _err })
   } catch (err) {
     next(err)
   }

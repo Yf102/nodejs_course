@@ -2,7 +2,6 @@ import { Router } from 'express'
 import {
   deleteUser,
   getLoggedInUser,
-  getUser,
   logOutUser,
   logoutUserAll,
   updateUser,
@@ -13,9 +12,8 @@ import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 const UserRouter = Router()
   .use(AuthMiddleware)
   .get('/', getLoggedInUser)
-  .get('/:id', getUser)
-  .patch('/:id', updateUser)
-  .delete('/:id', deleteUser)
+  .patch('/', updateUser)
+  .delete('/', deleteUser)
   .post('/logout', logOutUser)
   .post('/logout/all', logoutUserAll)
 
