@@ -4,6 +4,7 @@ import {
   getLoggedInUser,
   getUser,
   logOutUser,
+  logoutUserAll,
   updateUser,
 } from 'src/controllers/userController'
 import AuthMiddleware from 'src/middleware/auth'
@@ -16,5 +17,6 @@ const UserRouter = Router()
   .patch('/:id', updateUser)
   .delete('/:id', deleteUser)
   .post('/logout', logOutUser)
+  .post('/logout/all', logoutUserAll)
 
 export default applyErrorHandlingMiddleware(UserRouter)

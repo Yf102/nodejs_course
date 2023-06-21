@@ -93,6 +93,15 @@ const logOutUser = async (req: UserRequestType, res: Response) => {
   res.status(200).json({ success: true })
 }
 
+const logoutUserAll = async (req: UserRequestType, res: Response) => {
+  if (!req.user) return
+
+  req.user.tokens = []
+  await req.user?.save()
+
+  res.status(200).json({ success: true })
+}
+
 export {
   createUser,
   deleteUser,
@@ -100,5 +109,6 @@ export {
   getUser,
   logOutUser,
   loginUser,
+  logoutUserAll,
   updateUser,
 }
