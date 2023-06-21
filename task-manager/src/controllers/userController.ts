@@ -4,7 +4,7 @@ import { default as ServerError } from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import { IUser, UserModel, UserType } from 'src/models/user.model'
 
-const getAllUsers = async (req: UserRequestType, res: Response) => {
+const getLoggedInUser = async (req: UserRequestType, res: Response) => {
   res.status(200).json(req.user)
 }
 
@@ -19,23 +19,6 @@ const getUser = async (
   }
 
   res.status(200).json(user)
-}
-
-const createUser = async (
-  req: Request<{}, {}, UserType & { password: string }>,
-  res: Response
-) => {
-  const { password, ...rest } = req.body
-  if (!password) {
-    throw new CustomError(ServerError.CredentialsRequired)
-  }
-
-  const newUser: IUser = new UserModel<UserType>(rest)
-  newUser.setPassword(password)
-
-  await newUser.save()
-  const token = await newUser?.generateAuthToken()
-  res.status(201).json({ success: true, token })
 }
 
 const updateUser = async (
@@ -84,4 +67,28 @@ const loginUser = async (
   res.status(200).json({ success: true, user, token })
 }
 
-export { createUser, deleteUser, getAllUsers, getUser, loginUser, updateUser }
+const createUser = async (
+  req: Request<{}, {}, UserType & { password: string }>,
+  res: Response
+) => {
+  const { password, ...rest } = req.body
+  if (!password) {
+    throw new CustomError(ServerError.CredentialsRequired)
+  }
+
+  const newUser: IUser = new UserModel<UserType>(rest)
+  newUser.setPassword(password)
+
+  await newUser.save()
+  const token = await newUser?.generateAuthToken()
+  res.status(201).json({ success: true, token })
+}
+
+export {
+  createUser,
+  deleteUser,
+  getLoggedInUser,
+  getUser,
+  loginUser,
+  updateUser,
+}
