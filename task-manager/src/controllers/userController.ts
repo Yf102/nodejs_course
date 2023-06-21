@@ -76,12 +76,12 @@ const createUser = async (
     throw new CustomError(ServerError.CredentialsRequired)
   }
 
-  const newUser: IUser = new UserModel<UserType>(rest)
-  newUser.setPassword(password)
+  const user: IUser = new UserModel<UserType>(rest)
+  user.setPassword(password)
 
-  await newUser.save()
-  const token = await newUser?.generateAuthToken()
-  res.status(201).json({ success: true, token })
+  await user.save()
+  const token = await user?.generateAuthToken()
+  res.status(201).json({ success: true, user, token })
 }
 
 const logOutUser = async (req: UserRequestType, res: Response) => {

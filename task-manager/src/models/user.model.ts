@@ -124,6 +124,15 @@ UserSchema.methods.generateAuthToken = async function () {
   return token
 }
 
+UserSchema.methods.toJSON = function () {
+  const userObj = this.toObject()
+  delete userObj.hash
+  delete userObj.salt
+  delete userObj.tokens
+
+  return userObj
+}
+
 const UserModel = model<IUser, IUserModel>('User', UserSchema)
 
 export { IUser, UserModel, UserType }
