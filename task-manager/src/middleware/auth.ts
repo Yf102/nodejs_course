@@ -31,6 +31,7 @@ const AuthMiddleware = wrapWithTryCatch(
       throw new CustomError(ServerError.NoAvailableSessionException)
     }
 
+    req.token = token
     req.user = user
     next()
   }

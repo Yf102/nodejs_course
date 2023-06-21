@@ -84,11 +84,21 @@ const createUser = async (
   res.status(201).json({ success: true, token })
 }
 
+const logOutUser = async (req: UserRequestType, res: Response) => {
+  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
+
+  req.user.tokens = req.user?.tokens.filter((t) => t.token !== req.token)
+  await req.user?.save()
+
+  res.status(200).json({ success: true })
+}
+
 export {
   createUser,
   deleteUser,
   getLoggedInUser,
   getUser,
+  logOutUser,
   loginUser,
   updateUser,
 }

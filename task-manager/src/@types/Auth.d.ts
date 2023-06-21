@@ -13,4 +13,5 @@ export type UserRequestType<
   ReqQuery = {}
 > = Request<ReqParams, ResBody, ReqBody, ReqQuery> & {
   user?: IUser
+  token?: string
 }
