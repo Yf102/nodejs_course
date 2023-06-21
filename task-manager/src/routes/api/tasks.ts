@@ -6,10 +6,12 @@ import {
   getTask,
   updateTask,
 } from 'src/controllers/taskController'
+import AuthMiddleware from 'src/middleware/auth'
 import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 
 const TaskRouter = Router()
-  .get('', getAllTasks)
+  .use(AuthMiddleware)
+  .get('/', getAllTasks)
   .get('/:id', getTask)
   .post('/', createTask)
   .patch('/:id', updateTask)

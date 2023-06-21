@@ -19,6 +19,10 @@ const ServerError = {
     msg: 'Not Found',
     code: 404,
   },
+  InvalidUpdate: {
+    msg: 'Invalid Updates',
+    code: 400,
+  },
 }
 
 export default ServerError

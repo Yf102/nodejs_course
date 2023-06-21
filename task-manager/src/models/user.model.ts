@@ -2,8 +2,10 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { Document, Model, model, Schema } from 'mongoose'
 import * as process from 'process'
+import { Models, Virtual } from 'src/const/models'
 import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
+import { TaskType } from 'src/models/task.model'
 import validator from 'validator'
 
 interface UserType {
@@ -11,6 +13,7 @@ interface UserType {
   email: string
   age: number
   tokens: { token: string }[]
+  tasks?: TaskType[]
 }
 
 interface IUser extends UserType, Document {
@@ -134,6 +137,12 @@ UserSchema.methods.toJSON = function () {
   return userObj
 }
 
-const UserModel = model<IUser, IUserModel>('User', UserSchema)
+UserSchema.virtual(Virtual.TASKS, {
+  ref: Models.TASK,
+  localField: '_id',
+  foreignField: 'owner',
+})
+
+const UserModel = model<IUser, IUserModel>(Models.USER, UserSchema)
 
 export { IUser, UserModel, UserType }
