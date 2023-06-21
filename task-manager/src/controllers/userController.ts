@@ -14,7 +14,6 @@ const updateUser = async (
 ) => {
   const { password, name, email, age } = req.body
 
-  // const user = await UserModel.findById(req.params.id)
   if (!req.user) {
     throw new CustomError(ServerError.NotFound)
   }

@@ -12,6 +12,7 @@ interface UserType {
   age: number
   tokens: { token: string }[]
 }
+
 interface IUser extends UserType, Document {
   hash: string
   salt: string
