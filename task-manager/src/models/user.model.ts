@@ -5,7 +5,7 @@ import * as process from 'process'
 import { Models, Virtual } from 'src/const/models'
 import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
-import { TaskType } from 'src/models/task.model'
+import { TaskModel, TaskType } from 'src/models/task.model'
 import validator from 'validator'
 
 interface UserType {
@@ -27,7 +27,7 @@ interface IUserModel extends Model<IUser> {
   findByCredentials(email: string, password: string): Promise<IUser | null>
 }
 
-const UserSchema: Schema = new Schema({
+const UserSchema = new Schema<IUser, IUserModel>({
   name: {
     type: String,
     required: true,
@@ -143,6 +143,16 @@ UserSchema.virtual(Virtual.TASKS, {
   foreignField: 'owner',
 })
 
+UserSchema.pre<IUser>(
+  'deleteOne',
+  // options are provided to the pre method to specify that the hook applies
+  // to document-level operations and not query-level operations.
+  { document: true, query: false },
+  async function (next) {
+    await TaskModel.deleteMany({ owner: this._id })
+    next()
+  }
+)
 const UserModel = model<IUser, IUserModel>(Models.USER, UserSchema)
 
 export { IUser, UserModel, UserType }
