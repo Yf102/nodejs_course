@@ -1,12 +1,21 @@
 import { Response } from 'express'
-import { UserRequestType } from 'src/@types/Auth'
+import { TaskRequest, UserRequestType } from 'src/@types/Auth'
 import { Virtual } from 'src/const/models'
 import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import { ITask, TaskModel, TaskType } from 'src/models/task.model'
+import { ParseGetAllQueryType } from 'src/routes/api/tasks'
 
-const getAllTasks = async (req: UserRequestType, res: Response) => {
-  await req.user?.populate(Virtual.TASKS)
+const getAllTasks = async (
+  req: TaskRequest<{}, {}, {}, ParseGetAllQueryType>,
+  res: Response
+) => {
+  await req.user?.populate({
+    path: Virtual.TASKS,
+    match: req.parsedQuery?.match,
+    options: req.parsedQuery?.options,
+  })
+
   res.status(200).json(req.user?.tasks)
 }
 
