@@ -14,6 +14,8 @@ interface UserType {
   age: number
   tokens: { token: string }[]
   tasks?: TaskType[]
+  createdAt: Date
+  updateAt: Date
 }
 
 interface IUser extends UserType, Document {
@@ -27,50 +29,55 @@ interface IUserModel extends Model<IUser> {
   findByCredentials(email: string, password: string): Promise<IUser | null>
 }
 
-const UserSchema = new Schema<IUser, IUserModel>({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  hash: {
-    required: true,
-    type: String,
-  },
-  salt: {
-    required: true,
-    type: String,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    validate(value: string) {
-      if (!validator.isEmail(value)) {
-        throw new Error('Email must be valid.')
-      }
+const UserSchema = new Schema<IUser, IUserModel>(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
     },
-  },
-  age: {
-    type: Number,
-    default: 0,
-    validate(value: number) {
-      if (value < 0) {
-        throw new Error('Age must be apositive number')
-      }
+    hash: {
+      required: true,
+      type: String,
     },
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+    salt: {
+      required: true,
+      type: String,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate(value: string) {
+        if (!validator.isEmail(value)) {
+          throw new Error('Email must be valid.')
+        }
       },
     },
-  ],
-})
+    age: {
+      type: Number,
+      default: 0,
+      validate(value: number) {
+        if (value < 0) {
+          throw new Error('Age must be apositive number')
+        }
+      },
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+)
 
 UserSchema.statics.findByCredentials = async (
   email: string,
