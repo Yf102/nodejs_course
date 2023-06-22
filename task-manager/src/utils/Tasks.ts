@@ -8,11 +8,16 @@ import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 
 const DigitsReg = new RegExp(/^\d+$/)
+const DEFAULT_SKIP = 0
+const DEFAULT_LIMIT = 10
+const MIN_LIMIT = 0
+const MAX_LIMIT = 50
+
 const parseGetAllQuery = (query: GetAllQueryType) => {
   const { completed, limit, skip, sort } = query
   const parsedOptions: ParsedOptionsType = {
-    skip: 0,
-    limit: 10,
+    skip: DEFAULT_SKIP,
+    limit: DEFAULT_LIMIT,
     sort: {},
   }
 
@@ -23,12 +28,15 @@ const parseGetAllQuery = (query: GetAllQueryType) => {
   }
 
   if (DigitsReg.test(skip || '') && skip) {
-    parsedOptions.skip = parseInt(skip)
+    const _skip = parseInt(skip)
+    if (0 < _skip) {
+      parsedOptions.skip = parseInt(skip)
+    }
   }
 
   if (DigitsReg.test(limit || '') && limit) {
     const _limit = parseInt(limit)
-    if (_limit < 50) {
+    if (MIN_LIMIT < _limit && _limit <= MAX_LIMIT) {
       parsedOptions.limit = _limit
     }
   }
