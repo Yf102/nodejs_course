@@ -1,4 +1,5 @@
 import { allowedSorting } from 'src/@types/Tasks'
+import { allowedAvatarExt } from 'src/const/multer-config'
 
 const ServerError: Record<string, { message: string; code: number }> = {
   NoAvailableSessionException: {
@@ -29,8 +30,8 @@ const ServerError: Record<string, { message: string; code: number }> = {
     message: `Allowed sorting values: ${allowedSorting.toString()}`,
     code: 400,
   },
-  JpgOnlyAllowed: {
-    message: 'Only jpg files are accepted',
+  AvatarExtension: {
+    message: `Only ${allowedAvatarExt.join(', ')} files are accepted`,
     code: 400,
   },
 }
