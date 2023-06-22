@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-import * as console from 'console'
 import mongoose from 'mongoose'
 import * as process from 'process'
 const dbName = 'task-manager-api'
