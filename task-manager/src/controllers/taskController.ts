@@ -14,7 +14,6 @@ const getTask = async (
   req: UserRequestType<{ id: string }, {}, {}>,
   res: Response
 ) => {
-  // const task = await TaskModel.findById(req.params.id)
   const task = await TaskModel.findOne({
     _id: req.params.id,
     owner: req.user?._id,
