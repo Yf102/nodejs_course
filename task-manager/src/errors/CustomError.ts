@@ -1,14 +1,13 @@
 type CustomErrorType = {
-  msg: string
+  message: string
   code: number
 }
 class CustomError extends Error {
   code: number
-  msg: string
 
-  constructor({ msg, code }: CustomErrorType) {
+  constructor({ message, code }: CustomErrorType) {
     super()
-    this.msg = msg
+    this.message = message
     this.code = code
   }
 }

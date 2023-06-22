@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { UserRequestType } from 'src/@types/Auth'
+import { uploadAvatarConf } from 'src/const/multer-config'
 import { default as ServerError } from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import { IUser, UserModel, UserType } from 'src/models/user.model'
@@ -81,6 +82,19 @@ const logoutUserAll = async (req: UserRequestType, res: Response) => {
   res.status(200).json({ success: true })
 }
 
+const uploadAvatar = async (req: UserRequestType, res: Response) => {
+  await new Promise((resolve, reject) => {
+    uploadAvatarConf(req, res, function (err) {
+      if (err) {
+        reject(new CustomError({ message: err.message, code: 400 }))
+      }
+      resolve(true)
+    })
+  })
+
+  res.status(200).json({ success: true })
+}
+
 export {
   createUser,
   deleteUser,
@@ -89,4 +103,5 @@ export {
   loginUser,
   logoutUserAll,
   updateUser,
+  uploadAvatar,
 }

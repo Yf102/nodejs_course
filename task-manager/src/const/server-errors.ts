@@ -1,32 +1,36 @@
 import { allowedSorting } from 'src/@types/Tasks'
 
-const ServerError: Record<string, { msg: string; code: number }> = {
+const ServerError: Record<string, { message: string; code: number }> = {
   NoAvailableSessionException: {
-    msg: 'NoAvailableSessionException',
+    message: 'No Available Session Exception',
     code: 401,
   },
   InternalServerError: {
-    msg: 'Internal Server Error',
+    message: 'Internal Server Error',
     code: 500,
   },
   CredentialsRequired: {
-    msg: 'Email and Password must be provided',
+    message: 'Email and Password must be provided',
     code: 400,
   },
   InvalidCredentials: {
-    msg: 'Invalid credentials',
+    message: 'Invalid credentials',
     code: 400,
   },
   NotFound: {
-    msg: 'Not Found',
+    message: 'Not Found',
     code: 404,
   },
   InvalidUpdate: {
-    msg: 'Invalid Updates',
+    message: 'Invalid Updates',
     code: 400,
   },
   InvalidSorting: {
-    msg: `Allowed sorting values: ${allowedSorting.toString()}`,
+    message: `Allowed sorting values: ${allowedSorting.toString()}`,
+    code: 400,
+  },
+  JpgOnlyAllowed: {
+    message: 'Only jpg files are accepted',
     code: 400,
   },
 }

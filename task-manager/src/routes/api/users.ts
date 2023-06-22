@@ -5,6 +5,7 @@ import {
   logOutUser,
   logoutUserAll,
   updateUser,
+  uploadAvatar,
 } from 'src/controllers/userController'
 import AuthMiddleware from 'src/middleware/auth'
 import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
@@ -16,5 +17,6 @@ const UserRouter = Router()
   .delete('/', deleteUser)
   .post('/logout', logOutUser)
   .post('/logout/all', logoutUserAll)
+  .post('/upload/avatar', uploadAvatar)
 
 export default applyErrorHandlingMiddleware(UserRouter)
