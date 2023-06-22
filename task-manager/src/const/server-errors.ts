@@ -1,4 +1,6 @@
-const ServerError = {
+import { allowedSorting } from 'src/@types/Tasks'
+
+const ServerError: Record<string, { msg: string; code: number }> = {
   NoAvailableSessionException: {
     msg: 'NoAvailableSessionException',
     code: 401,
@@ -21,6 +23,10 @@ const ServerError = {
   },
   InvalidUpdate: {
     msg: 'Invalid Updates',
+    code: 400,
+  },
+  InvalidSorting: {
+    msg: `Allowed sorting values: ${allowedSorting.toString()}`,
     code: 400,
   },
 }
