@@ -103,8 +103,18 @@ const uploadAvatar = async (req: UserRequestType, res: Response) => {
   res.status(200).json({ success: true })
 }
 
+const deleteAvatar = async (req: UserRequestType, res: Response) => {
+  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
+
+  req.user.avatar = undefined
+  req.user.save()
+
+  res.status(200).json({ success: true })
+}
+
 export {
   createUser,
+  deleteAvatar,
   deleteUser,
   getLoggedInUser,
   logOutUser,

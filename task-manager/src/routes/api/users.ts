@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  deleteAvatar,
   deleteUser,
   getLoggedInUser,
   logOutUser,
@@ -18,5 +19,6 @@ const UserRouter = Router()
   .post('/logout', logOutUser)
   .post('/logout/all', logoutUserAll)
   .post('/upload/avatar', uploadAvatar)
+  .post('/delete/avatar', deleteAvatar)
 
 export default applyErrorHandlingMiddleware(UserRouter)
