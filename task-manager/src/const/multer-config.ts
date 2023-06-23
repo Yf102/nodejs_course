@@ -4,7 +4,6 @@ import CustomError from 'src/errors/CustomError'
 
 export const allowedAvatarExt = ['jpg', 'jpeg', 'png']
 const uploadAvatarConf = multer({
-  dest: 'uploads/avatars',
   limits: {
     fileSize: 1000000, // 1MB
   },

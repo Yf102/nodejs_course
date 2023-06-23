@@ -74,7 +74,7 @@ const logOutUser = async (req: UserRequestType, res: Response) => {
 }
 
 const logoutUserAll = async (req: UserRequestType, res: Response) => {
-  if (!req.user) return
+  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
 
   req.user.tokens = []
   await req.user?.save()
@@ -83,14 +83,22 @@ const logoutUserAll = async (req: UserRequestType, res: Response) => {
 }
 
 const uploadAvatar = async (req: UserRequestType, res: Response) => {
-  await new Promise((resolve, reject) => {
-    uploadAvatarConf(req, res, function (err) {
-      if (err) {
-        reject(new CustomError({ message: err.message, code: 400 }))
-      }
-      resolve(true)
-    })
-  })
+  const fileBuffer: Buffer | undefined = await new Promise(
+    (resolve, reject) => {
+      uploadAvatarConf(req, res, function (err) {
+        if (err) {
+          reject(new CustomError({ message: err.message, code: 400 }))
+        }
+        resolve(req.file?.buffer)
+      })
+    }
+  )
+
+  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
+  if (!fileBuffer) throw new CustomError(ServerError.AvatarExtension)
+
+  req.user.avatar = fileBuffer
+  await req.user.save()
 
   res.status(200).json({ success: true })
 }

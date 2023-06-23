@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-import { Document, Model, model, Schema } from 'mongoose'
+import { Document, Model, Schema, model } from 'mongoose'
 import * as process from 'process'
 import { Models, Virtual } from 'src/const/models'
 import ServerError from 'src/const/server-errors'
@@ -14,6 +14,7 @@ interface UserType {
   age: number
   tokens: { token: string }[]
   tasks?: TaskType[]
+  avatar?: Buffer
   createdAt: Date
   updateAt: Date
 }
@@ -73,6 +74,7 @@ const UserSchema = new Schema<IUser, IUserModel>(
         },
       },
     ],
+    avatar: Buffer,
   },
   {
     timestamps: true,
