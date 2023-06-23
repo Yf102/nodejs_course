@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import sharp from 'sharp'
 import { UserRequestType } from 'src/@types/Auth'
 import { uploadAvatarConf } from 'src/const/multer-config'
 import { default as ServerError } from 'src/const/server-errors'
@@ -83,6 +84,8 @@ const logoutUserAll = async (req: UserRequestType, res: Response) => {
 }
 
 const uploadAvatar = async (req: UserRequestType, res: Response) => {
+  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
+
   const fileBuffer: Buffer | undefined = await new Promise(
     (resolve, reject) => {
       uploadAvatarConf(req, res, function (err) {
@@ -94,10 +97,16 @@ const uploadAvatar = async (req: UserRequestType, res: Response) => {
     }
   )
 
-  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
   if (!fileBuffer) throw new CustomError(ServerError.AvatarExtension)
 
-  req.user.avatar = fileBuffer
+  req.user.avatar = await sharp(fileBuffer)
+    .resize({
+      width: 250,
+      height: 250,
+    })
+    .png()
+    .toBuffer()
+
   await req.user.save()
 
   res.status(200).json({ success: true })
@@ -121,7 +130,7 @@ const getAvatar = async (req: UserRequestType, res: Response) => {
     })
   }
 
-  res.set('Content-Type', 'image/jpg').send(req.user.avatar)
+  res.set('Content-Type', 'image/png').send(req.user.avatar)
 }
 export {
   createUser,
