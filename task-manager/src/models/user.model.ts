@@ -142,6 +142,7 @@ UserSchema.methods.toJSON = function () {
   delete userObj.hash
   delete userObj.salt
   delete userObj.tokens
+  delete userObj.avatar
 
   return userObj
 }
