@@ -19,6 +19,6 @@ const UserRouter = Router()
   .post('/logout', logOutUser)
   .post('/logout/all', logoutUserAll)
   .post('/upload/avatar', uploadAvatar)
-  .post('/delete/avatar', deleteAvatar)
+  .delete('/delete/avatar', deleteAvatar)
 
 export default applyErrorHandlingMiddleware(UserRouter)
