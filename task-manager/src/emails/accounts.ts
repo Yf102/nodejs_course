@@ -15,8 +15,9 @@ const SENDER_NAME = process.env.SENDER_NAME || 'Your Name'
 export class EmailSender {
   private httpClient: AxiosInstance
   private payload: BrevoPayloadType
+  private user: IUser
 
-  constructor() {
+  constructor(user: IUser) {
     this.httpClient = axios.create({
       baseURL: 'https://api.brevo.com',
       headers: {
@@ -26,29 +27,51 @@ export class EmailSender {
       },
     })
 
+    this.user = user
+
     this.payload = {
       sender: {
         name: SENDER_NAME,
         email: SENDER_EMAIL,
       },
-      subject: 'Welcome to Task Manager App',
+      to: [
+        {
+          email: user.email,
+          name: user.name,
+        },
+      ],
     }
   }
 
-  public sendWelcomeEmail(user: IUser) {
+  public sendWelcomeEmail = async () => {
     const emailTemplatePath = path.join(__dirname, 'html', 'welcome-email.html')
     const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8')
-    const emailHtml = ejs.render(emailTemplate, { userName: user.name }) // @ts-ignore
 
-    this.payload.to = [
-      {
-        email: user.email,
-        name: user.name,
-      },
-    ]
+    this.payload.subject = 'Welcome to Task Manager App'
+    this.payload.htmlContent = ejs.render(emailTemplate, {
+      userName: this.user.name,
+      senderName: SENDER_NAME,
+    })
+
+    await this.send()
+  }
+
+  public sendGoodByEmail = async () => {
+    const emailTemplatePath = path.join(__dirname, 'html', 'goodbyе-email.html')
+    const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8')
+    const emailHtml = ejs.render(emailTemplate, {
+      userName: this.user.name,
+      senderName: SENDER_NAME,
+    })
+
+    this.payload.subject = 'Account Deletion Confirmation'
     this.payload.htmlContent = emailHtml
 
-    this.httpClient
+    await this.send()
+  }
+
+  private send = async () => {
+    return this.httpClient
       .post('/v3/smtp/email', this.payload)
       .then((response: AxiosResponse) => {
         console.log('Email sent successfully')

@@ -31,6 +31,11 @@ const updateUser = async (
 }
 
 const deleteUser = async (req: UserRequestType, res: Response) => {
+  if (!req.user) throw new CustomError(ServerError.NoAvailableSessionException)
+
+  const emailSender = new EmailSender(req.user)
+  emailSender.sendGoodByEmail()
+
   await req.user?.deleteOne()
   res.status(200).json({ success: true })
 }
@@ -65,8 +70,8 @@ const createUser = async (
 
   const token = await user?.generateAuthToken()
 
-  const emailSender = new EmailSender()
-  emailSender.sendWelcomeEmail(user)
+  const emailSender = new EmailSender(user)
+  emailSender.sendWelcomeEmail()
 
   res.status(201).json({ success: true, user, token })
 }

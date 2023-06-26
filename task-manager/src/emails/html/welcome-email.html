@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Welcome to Task Manager App</title>
-    </head>
-    <body>
-        <h1>Welcome <%= userName %>!</h1>
-        <p>Thank you for joining Task Manager Ap. We are excited to have you as a member.</p>
-        <p>If you have any questions or need assistance, feel free to reach out to our support team.</p>
-        <p>Best regards,</p>
-        <p>Task Manager app Team</p>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Task Manager App</title>
+</head>
+<body>
+<table style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <tr>
+        <td>
+            <h1>Welcome to Task Manager App</h1>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Dear <%= userName %>,</p>
+            <p>Welcome to our web application! We are thrilled to have you as a new member of our community.</p>
+            <p>With our platform, you can [briefly describe the key features or benefits of your application].</p>
+            <p>If you have any questions, need assistance, or want to share feedback, feel free to reach out to our support team at <%= userName %>. We're here to help!</p>
+            <p>Thank you once again for joining us. We hope you have a fantastic experience using our web application!</p>
+            <p>Best regards,</p>
+            <p><%= senderName %></p>
+        </td>
+    </tr>
+</table>
+</body>
 </html>
