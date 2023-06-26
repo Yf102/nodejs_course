@@ -3,27 +3,17 @@ import * as console from 'console'
 import ejs from 'ejs'
 import fs from 'fs'
 import * as path from 'path'
+import { BrevoError, BrevoPayloadType } from 'src/@types/Brevo'
+import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import { IUser } from 'src/models/user.model'
-
-type PayloadType = {
-  sender: {
-    name: string
-    email: string
-  }
-  to: {
-    email: string
-    name: string
-  }[]
-  subject: string
-  htmlContent: string
-}
 
 const SENDER_EMAIL = 'senderfilip@example.com'
 const SENDER_NAME = 'Filip Hristov'
 
 export class EmailSender {
   private httpClient: AxiosInstance
+  private payload: BrevoPayloadType
 
   constructor() {
     this.httpClient = axios.create({
@@ -34,35 +24,40 @@ export class EmailSender {
         accept: 'application/json',
       },
     })
+
+    this.payload = {
+      sender: {
+        name: SENDER_NAME,
+        email: SENDER_EMAIL,
+      },
+      subject: 'Welcome to Task Manager App',
+    }
   }
 
   public sendWelcomeEmail(user: IUser): Promise<AxiosResponse> {
     const emailTemplatePath = path.join(__dirname, 'html', 'welcome-email.html')
     const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8')
-    const emailHtml = ejs.render(emailTemplate, { userName: user.name })
+    const emailHtml = ejs.render(emailTemplate, { userName: user.name }) // @ts-ignore
 
-    const payload: PayloadType = {
-      sender: {
-        name: SENDER_NAME,
-        email: SENDER_EMAIL,
+    this.payload.to = [
+      {
+        email: user.email,
+        name: user.name,
       },
-      to: [
-        {
-          email: user.email,
-          name: user.name,
-        },
-      ],
-      subject: 'Welcome to Task Manager App',
-      htmlContent: emailHtml,
-    }
+    ]
+    this.payload.htmlContent = emailHtml
 
     return this.httpClient
-      .post('/v3/smtp/email', payload)
+      .post('/v3/smtp/email', this.payload)
       .then((response: AxiosResponse) => {
         console.log('Email sent successfully')
         return response
       })
       .catch((error) => {
+        if (error.response.data.code in BrevoError) {
+          throw new CustomError(ServerError.InternalServerError)
+        }
+
         throw new CustomError({
           message: `${error.response.data.code}: ${error.response.data.message}`,
           code: 400,
