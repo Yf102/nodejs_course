@@ -2,9 +2,9 @@ import { NextFunction, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { DecodedType, UserRequestType } from 'src/@types/Auth'
 import ServerError from 'src/const/server-errors'
+import { UserModel } from 'src/db/models/user.model'
 import CustomError from 'src/errors/CustomError'
 import { wrapWithTryCatch } from 'src/middleware/errorHandling'
-import { UserModel } from 'src/models/user.model'
 
 const AuthMiddleware = wrapWithTryCatch(
   async (req: UserRequestType, res: Response, next: NextFunction) => {

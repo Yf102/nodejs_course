@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { IUser } from 'src/models/user.model'
+import { IUser } from 'src/db/models/user.model'
 
 export type DecodedType = {
   _id: string

@@ -4,8 +4,8 @@ import { Document, Model, Schema, model } from 'mongoose'
 import * as process from 'process'
 import { Models, Virtual } from 'src/const/models'
 import ServerError from 'src/const/server-errors'
+import { TaskModel, TaskType } from 'src/db/models/task.model'
 import CustomError from 'src/errors/CustomError'
-import { TaskModel, TaskType } from 'src/models/task.model'
 import validator from 'validator'
 
 interface UserType {

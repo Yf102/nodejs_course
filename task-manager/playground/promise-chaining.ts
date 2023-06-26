@@ -1,5 +1,5 @@
+import { UserModel } from 'task-manager/src/db/models/user.model'
 import Database from '../src/db/mongoose'
-import { UserModel } from '../src/models/user.model'
 
 const start = async (id: string, age: number) => {
   await Database()

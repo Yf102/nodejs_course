@@ -3,9 +3,9 @@ import sharp from 'sharp'
 import { UserRequestType } from 'src/@types/Auth'
 import { uploadAvatarConf } from 'src/const/multer-config'
 import { default as ServerError } from 'src/const/server-errors'
+import { IUser, UserModel, UserType } from 'src/db/models/user.model'
 import { EmailSender } from 'src/emails/accounts'
 import CustomError from 'src/errors/CustomError'
-import { IUser, UserModel, UserType } from 'src/models/user.model'
 
 const getLoggedInUser = async (req: UserRequestType, res: Response) => {
   res.status(200).json(req.user)

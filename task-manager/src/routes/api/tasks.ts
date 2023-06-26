@@ -5,7 +5,7 @@ import {
   getAllTasks,
   getTask,
   updateTask,
-} from 'src/controllers/taskController'
+} from 'src/db/controllers/taskController'
 import AuthMiddleware from 'src/middleware/auth'
 import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 

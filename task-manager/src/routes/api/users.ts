@@ -8,7 +8,7 @@ import {
   logoutUserAll,
   updateUser,
   uploadAvatar,
-} from 'src/controllers/userController'
+} from 'src/db/controllers/userController'
 import AuthMiddleware from 'src/middleware/auth'
 import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 

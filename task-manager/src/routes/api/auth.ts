@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createUser, loginUser } from 'src/controllers/userController'
+import { createUser, loginUser } from 'src/db/controllers/userController'
 import { applyErrorHandlingMiddleware } from 'src/middleware/errorHandling'
 
 const AuthRouter = Router()

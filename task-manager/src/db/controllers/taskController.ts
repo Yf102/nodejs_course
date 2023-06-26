@@ -3,8 +3,8 @@ import { UserRequestType } from 'src/@types/Auth'
 import { GetAllQueryType } from 'src/@types/Tasks'
 import { Virtual } from 'src/const/models'
 import ServerError from 'src/const/server-errors'
+import { ITask, TaskModel, TaskType } from 'src/db/models/task.model'
 import CustomError from 'src/errors/CustomError'
-import { ITask, TaskModel, TaskType } from 'src/models/task.model'
 import { parseGetAllQuery } from 'src/utils/Tasks'
 
 const getAllTasks = async (
