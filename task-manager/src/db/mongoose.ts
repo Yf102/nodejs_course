@@ -1,14 +1,10 @@
 import mongoose from 'mongoose'
-import * as process from 'process'
 const dbName = 'task-manager-api'
-const mongoDB = process.env.DEV ? '127.0.0.1' : 'mongo'
 
-console.log(`CONNECTING TO ${mongoDB}`)
-const connectionUrl = `mongodb://${mongoDB}:27017/${dbName}`
-
-const Database = async () => {
+const Database = async (connectionUrl: string) => {
+  console.log(`CONNECTING TO ${connectionUrl}/${dbName}`)
   mongoose
-    .connect(connectionUrl)
+    .connect(`${connectionUrl}/${dbName}`)
     .then(() => console.log('✔️ Connection successful: MongoDB Atlas'))
     .catch((err) => {
       console.log('❌ Connection failed: MongoDB Atlas')

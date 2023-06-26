@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "run-mongo": "mongod --dbpath=./data/db",
-    "dev": "DEV=true NODE_ENV=development nodemon",
+    "dev": "NODE_ENV=development nodemon",
     "build": "rimraf ./build && NODE_ENV=production webpack",
     "start": "npm run build && node build/bundle.js",
     "lint": "npm run type-check && npm run prettier:check",

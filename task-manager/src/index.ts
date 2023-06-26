@@ -21,7 +21,7 @@ app.use(errorMiddleware)
 
 const start = async () => {
   try {
-    await Database()
+    await Database(process.env.MONGODB_URL || '')
     app.listen(port, () =>
       console.log(`🚀 Server ready at: http://localhost:${port}`)
     )
