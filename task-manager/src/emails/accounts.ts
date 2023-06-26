@@ -3,13 +3,14 @@ import * as console from 'console'
 import ejs from 'ejs'
 import fs from 'fs'
 import * as path from 'path'
+import * as process from 'process'
 import { BrevoError, BrevoPayloadType } from 'src/@types/Brevo'
 import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 import { IUser } from 'src/models/user.model'
 
-const SENDER_EMAIL = 'senderfilip@example.com'
-const SENDER_NAME = 'Filip Hristov'
+const SENDER_EMAIL = process.env.SENDER_EMAIL || 'sender@example.com'
+const SENDER_NAME = process.env.SENDER_NAME || 'Your Name'
 
 export class EmailSender {
   private httpClient: AxiosInstance
