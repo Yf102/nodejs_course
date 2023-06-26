@@ -66,7 +66,7 @@ const createUser = async (
   const token = await user?.generateAuthToken()
 
   const emailSender = new EmailSender()
-  await emailSender.sendWelcomeEmail(user)
+  emailSender.sendWelcomeEmail(user)
 
   res.status(201).json({ success: true, user, token })
 }

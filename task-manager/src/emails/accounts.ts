@@ -34,7 +34,7 @@ export class EmailSender {
     }
   }
 
-  public sendWelcomeEmail(user: IUser): Promise<AxiosResponse> {
+  public sendWelcomeEmail(user: IUser) {
     const emailTemplatePath = path.join(__dirname, 'html', 'welcome-email.html')
     const emailTemplate = fs.readFileSync(emailTemplatePath, 'utf8')
     const emailHtml = ejs.render(emailTemplate, { userName: user.name }) // @ts-ignore
@@ -47,7 +47,7 @@ export class EmailSender {
     ]
     this.payload.htmlContent = emailHtml
 
-    return this.httpClient
+    this.httpClient
       .post('/v3/smtp/email', this.payload)
       .then((response: AxiosResponse) => {
         console.log('Email sent successfully')
