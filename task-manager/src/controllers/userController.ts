@@ -3,6 +3,7 @@ import sharp from 'sharp'
 import { UserRequestType } from 'src/@types/Auth'
 import { uploadAvatarConf } from 'src/const/multer-config'
 import { default as ServerError } from 'src/const/server-errors'
+import { EmailSender } from 'src/emails/accounts'
 import CustomError from 'src/errors/CustomError'
 import { IUser, UserModel, UserType } from 'src/models/user.model'
 
@@ -61,7 +62,12 @@ const createUser = async (
   user.setPassword(password)
 
   await user.save()
+
   const token = await user?.generateAuthToken()
+
+  const emailSender = new EmailSender()
+  await emailSender.sendWelcomeEmail(user)
+
   res.status(201).json({ success: true, user, token })
 }
 
