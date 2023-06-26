@@ -6,8 +6,8 @@ import AuthRouter from 'src/routes/api/auth'
 import TaskRouter from 'src/routes/api/tasks'
 import UserRouter from 'src/routes/api/users'
 
-dotenv.config()
-const port = process.env.port || 3000
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
+const port = process.env.PORT
 
 const app = express()
 app.use(express.json())
