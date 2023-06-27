@@ -12,7 +12,7 @@
     "type-check": "tsc --noemit",
     "prettier:check": "prettier \"**/*.ts\" \"**/*.js\" --check",
     "prettier:fix": "prettier \"**/*.ts\" \"**/*.js\" --write",
-    "test": "jest"
+    "test": "jest --setupFiles ./.env.test --watch"
   },
   "keywords": [],
   "author": "",
