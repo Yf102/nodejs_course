@@ -15,10 +15,8 @@ const errorMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    if (!err.code) {
-      // eslint-disable-next-line no-console
-      console.log(err)
-    }
+    // eslint-disable-next-line no-console
+    console.log(err)
 
     // TODO: Add file logging if required
     const _err = err.code ? err : ServerError.InternalServerError

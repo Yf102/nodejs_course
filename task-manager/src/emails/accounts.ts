@@ -71,6 +71,7 @@ export class EmailSender {
   }
 
   private send = async () => {
+    if (process.env.NODE_ENV !== 'production') return
     return this.httpClient
       .post('/v3/smtp/email', this.payload)
       .then((response: AxiosResponse) => {
