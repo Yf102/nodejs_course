@@ -11,15 +11,15 @@ import validator from 'validator'
 interface UserType {
   name: string
   email: string
-  age: number
-  tokens: { token: string }[]
-  tasks?: TaskType[]
+  age?: number
   avatar?: Buffer
-  createdAt: Date
-  updateAt: Date
 }
 
 interface IUser extends UserType, Document {
+  tasks?: TaskType[]
+  tokens: { token: string }[]
+  createdAt: Date
+  updateAt: Date
   hash: string
   salt: string
   setPassword: (password: string) => void
