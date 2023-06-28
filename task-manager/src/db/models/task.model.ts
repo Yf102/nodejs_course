@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose'
+import { Document, Schema, Types, model } from 'mongoose'
 import { Models } from 'src/const/models'
 
 const {
@@ -8,11 +8,12 @@ const {
 interface TaskType {
   description: string
   completed?: boolean
-  owner?: string
+  owner?: Types.ObjectId
+}
+interface ITask extends TaskType, Document {
   createdAt: Date
   updateAt: Date
 }
-interface ITask extends TaskType, Document {}
 
 const TaskSchema: Schema = new Schema(
   {

@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "src/*": ["src/*"]
-    },
+    "baseUrl": ".",
     "target": "es5",
     "module": "commonjs",
+    "moduleResolution": "node",
     "lib": ["es6"],
     "allowJs": true,
-    "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "tests/**/*.ts"],
   "exclude": ["node_modules", "src/db/mongoose.ts"]
 }

@@ -1,29 +1,9 @@
-import jwt from 'jsonwebtoken'
-import { Types } from 'mongoose'
 import app from 'src/app'
-import { UserModel, UserType } from 'src/db/models/user.model'
+import { UserModel } from 'src/db/models/user.model'
 import request from 'supertest'
+import { setupDB, userOne, userOneID } from 'tests/fixtures/db'
 
-const userOneID = new Types.ObjectId()
-const userOne = {
-  _id: userOneID,
-  name: 'Gosho',
-  email: 'gosho@gmail.com',
-  password: 'Test123',
-  tokens: [
-    {
-      token: jwt.sign({ _id: userOneID }, process.env.JWT_SECRET || ''),
-    },
-  ],
-}
-
-beforeEach(async () => {
-  await UserModel.deleteMany()
-
-  const user = new UserModel<UserType>(userOne)
-  user.setPassword(userOne.password)
-  await user.save()
-})
+beforeEach(setupDB)
 
 test('Should signup new user', async () => {
   const resp = await request(app)
