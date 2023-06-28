@@ -26,7 +26,7 @@ beforeEach(async () => {
 })
 
 test('Should signup new user', async () => {
-  await request(app)
+  const resp = await request(app)
     .post('/api/signup')
     .send({
       name: 'Filip',
@@ -34,6 +34,10 @@ test('Should signup new user', async () => {
       password: 'Test123',
     })
     .expect(201)
+
+  // Assert that DB was changed correctly
+  const user = await UserModel.findById(resp.body.user._id)
+  expect(user).not.toBeNull()
 })
 
 test('Should login existing user', async () => {
