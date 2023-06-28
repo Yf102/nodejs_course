@@ -95,15 +95,39 @@ test('Should not get user profile', async () => {
     })
 })
 
-test('Should delete user', async () => {
+test('Should upload avatar', async () => {
   await request(app)
-    .delete('/api/user')
+    .post('/api/user/upload/avatar')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .attach('avatar', 'tests/fixtures/profile-pic.jpg')
     .expect(200)
     .expect({ success: true })
 
   const user = await UserModel.findById(userOneID)
-  expect(user).toBeNull()
+  expect(user?.avatar).toEqual(expect.any(Buffer))
+})
+
+test('Should update valid user fields', async () => {
+  await request(app)
+    .patch('/api/user')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send({
+      name: 'Filip',
+    })
+    .expect(200)
+
+  const user = await UserModel.findById(userOneID)
+  expect(user?.name).toBe('Filip')
+})
+
+test('Should update not valid user fields', async () => {
+  await request(app)
+    .patch('/api/user')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send({
+      location: 'Sofia',
+    })
+    .expect(400)
 })
 
 test('Should not delete user', async () => {
@@ -116,4 +140,15 @@ test('Should not delete user', async () => {
         code: 401,
       },
     })
+})
+
+test('Should delete user', async () => {
+  await request(app)
+    .delete('/api/user')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .expect(200)
+    .expect({ success: true })
+
+  const user = await UserModel.findById(userOneID)
+  expect(user).toBeNull()
 })

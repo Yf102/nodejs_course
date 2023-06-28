@@ -15,11 +15,16 @@ const updateUser = async (
   req: UserRequestType<{}, {}, UserType & { password: string }>,
   res: Response
 ) => {
-  const { password, name, email, age } = req.body
+  if (!req.user) throw new CustomError(ServerError.NotFound)
 
-  if (!req.user) {
-    throw new CustomError(ServerError.NotFound)
-  }
+  const allowedFields = ['password', 'name', 'email', 'age']
+  Object.keys(req.body).forEach((field) => {
+    if (!allowedFields.find((af) => af === field)) {
+      throw new CustomError({ code: 400, message: `${field} is not allowed` })
+    }
+  })
+
+  const { password, name, email, age } = req.body
 
   if (name) req.user.name = name
   if (email) req.user.email = email
