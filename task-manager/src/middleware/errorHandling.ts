@@ -5,6 +5,7 @@ import {
   Response,
   Router,
 } from 'express'
+import * as process from 'process'
 import ServerError from 'src/const/server-errors'
 import CustomError from 'src/errors/CustomError'
 
@@ -16,7 +17,9 @@ const errorMiddleware = async (
 ) => {
   try {
     // eslint-disable-next-line no-console
-    console.log(err)
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(err)
+    }
 
     // TODO: Add file logging if required
     const _err = err.code ? err : ServerError.InternalServerError
