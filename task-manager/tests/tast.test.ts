@@ -1,7 +1,13 @@
 import app from 'src/app'
 import { TaskModel } from 'src/db/models/task.model'
 import request from 'supertest'
-import { setupDB, taskOne, userOne, userTwo } from 'tests/fixtures/db'
+import {
+  setupDB,
+  taskOne,
+  taskThree,
+  userOne,
+  userTwo,
+} from 'tests/fixtures/db'
 
 beforeEach(setupDB)
 
@@ -36,4 +42,14 @@ test('Should not delete other users tasks', async () => {
 
   const task = await TaskModel.findById(taskOne._id)
   expect(task).not.toBeNull()
+})
+
+test('Should delete its own task', async () => {
+  await request(app)
+    .delete(`/api/tasks/${taskThree._id}`)
+    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
+    .expect(200)
+
+  const task = await TaskModel.findById(taskThree._id)
+  expect(task).toBeNull()
 })

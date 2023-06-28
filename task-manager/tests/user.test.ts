@@ -110,6 +110,15 @@ test('Should update not valid user fields', async () => {
     .expect(400)
 })
 
+test('Should not update user if not authenticate', async () => {
+  await request(app)
+    .patch('/api/user')
+    .send({
+      name: 'Jason',
+    })
+    .expect(401)
+})
+
 test('Should not delete user', async () => {
   await request(app)
     .delete('/api/user')
