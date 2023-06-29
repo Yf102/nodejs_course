@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input It renders Input with NO label 1`] = `
+<DocumentFragment>
+  <div
+    class="w-full pt-0 mb-3"
+  >
+    <input
+      class="relative h-12 w-full px-4 py-1 bg-white border-0 rounded-md outline-none focus:outline-none text-center text-xl text-black"
+      placeholder="23.351723"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Input It renders Input with label 1`] = `
+<DocumentFragment>
+  <div
+    class="w-full pt-0 mb-3"
+  >
+    <label
+      data-testid="input-label-element"
+    >
+      Testing Label
+    </label>
+    <input
+      class="relative h-12 w-full px-4 py-1 bg-white border-0 rounded-md outline-none focus:outline-none text-center text-xl text-black"
+      label="Testing Label"
+      placeholder="23.351723"
+    />
+  </div>
+</DocumentFragment>
+`;
