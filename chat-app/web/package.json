@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cp .env.development .env.local && NODE_OPTIONS='--inspect' next dev",
+    "dev": "cp .env.development .env.local && NODE_OPTIONS='--inspect' next dev -p 3001",
     "build": "cp .env.production .env.local && next build",
-    "start": "next start",
+    "start": "next start -p 3031",
     "type-check": "tsc --noemit",
     "lint": "npm run type-check && next lint --max-warnings=1 --fix",
     "test": "jest --ci --reporters=default --reporters=jest-junit --coverage",
