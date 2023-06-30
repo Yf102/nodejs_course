@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const basePath = process.env?.API
-  ? process.env.API
-  : process.env.NEXT_PUBLIC_BASE_PATH
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH
 
 const baseQuery = fetchBaseQuery({
   baseUrl: basePath + '/api/',
