@@ -13,7 +13,7 @@ const io = new Server(server, {
   },
 })
 
-const count = 0
+let count = 0
 io.on('connection', (socket) => {
   console.log('New WebSocket connection')
   socket.emit('countUpdated', count)
@@ -22,6 +22,11 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', (reason) => {
     console.log(reason)
+  })
+
+  socket.on('increment', () => {
+    count++
+    io.emit('countUpdated', count)
   })
 })
 
