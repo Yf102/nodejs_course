@@ -33,6 +33,12 @@ const Home = ({}) => {
         return [...old, data]
       })
     })
+
+    socket.on('receiveLocation', (data: string) => {
+      setReceivedMessage((old) => {
+        return [...old, `{{location}}:${data}`]
+      })
+    })
   }, [socket])
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,6 +47,20 @@ const Home = ({}) => {
     if (inputRef?.current) {
       inputRef.current.value = ''
     }
+  }
+
+  const sendLocation = () => {
+    if (!navigator.geolocation) {
+      return alert('Geolocation is not supported by your browser.')
+    }
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      // https://google.com/maps?q=42.69724254741613,23.352732746442026
+      socket?.emit('sendLocation', {
+        long: position.coords.longitude,
+        lat: position.coords.latitude,
+      })
+    })
   }
 
   return (
@@ -63,10 +83,28 @@ const Home = ({}) => {
               >
                 Send Message
               </button>
+              <div
+                className={cn(
+                  stylesHF['button-class'],
+                  stylesHF['button-secondary-glow'],
+                  'rounded-md px-4 py-1 mb-10'
+                )}
+                onClick={sendLocation}
+              >
+                Send Location
+              </div>
             </form>
 
             <div className='flex flex-col items-center'>
               {receivedMessage.map((msg, index) => {
+                const location = msg.split('{{location}}:')[1]
+                if (location) {
+                  return (
+                    <a key={index} target='_blank' href={location}>
+                      New Location
+                    </a>
+                  )
+                }
                 return <div key={index}>{msg}</div>
               })}
             </div>

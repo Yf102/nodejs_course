@@ -21,6 +21,13 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('message', 'A new user has joined!')
 
   socket.on('message', (res) => io.emit('message', res))
+
+  socket.on('sendLocation', (res: { long: string; lat: string }) =>
+    socket.broadcast.emit(
+      'receiveLocation',
+      `https://google.com/maps?q=${res.lat},${res.long}`
+    )
+  )
 })
 
 try {

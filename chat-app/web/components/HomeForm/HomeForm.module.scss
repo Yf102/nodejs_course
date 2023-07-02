@@ -5,6 +5,9 @@
     line-height: 1.75rem;
     font-weight: 900;
     width: 200px;
+    &:active {
+        transform: scale(1.075);
+    }
 }
 
 .button-primary {
@@ -12,4 +15,11 @@
     0 0 20px #f8ff0091, 0 2px 6px #000000;
     background: #fbd81d;
     color: #b03f00;
+}
+
+.button-secondary-glow {
+    @apply cursor-pointer text-center;
+    background-image: linear-gradient(to bottom, #7a3896, #5f197f);
+    box-shadow: 0 2px 5px 0 #4b006b, inset 0 1px 0 0 rgba(255, 255, 255, 0.29),
+    inset 0 10px 20px 0 rgba(255, 255, 255, 0.1);
 }
