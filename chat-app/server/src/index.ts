@@ -15,7 +15,10 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   console.log('client connected: ', socket.id)
-  socket.on('disconnect', (reason) => console.log(reason))
+  socket.on('disconnect', () => io.emit('message', 'A user has left'))
+
+  // Send to everyone but current socket
+  socket.broadcast.emit('message', 'A new user has joined!')
 
   socket.on('message', (res) => io.emit('message', res))
 })
