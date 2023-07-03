@@ -43,7 +43,11 @@ const Home = ({}) => {
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    socket?.emit('message', inputRef?.current?.value)
+    socket?.emit('sendMessage', inputRef?.current?.value, (error?: string) => {
+      if (error) return console.log(error)
+
+      console.log('Message Delivered')
+    })
     if (inputRef?.current) {
       inputRef.current.value = ''
     }
@@ -56,10 +60,14 @@ const Home = ({}) => {
 
     navigator.geolocation.getCurrentPosition((position) => {
       // https://google.com/maps?q=42.69724254741613,23.352732746442026
-      socket?.emit('sendLocation', {
-        long: position.coords.longitude,
-        lat: position.coords.latitude,
-      })
+      socket?.emit(
+        'sendLocation',
+        {
+          long: position.coords.longitude,
+          lat: position.coords.latitude,
+        },
+        (message?: string) => console.log(message)
+      )
     })
   }
 

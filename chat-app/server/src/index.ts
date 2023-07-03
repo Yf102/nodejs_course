@@ -1,3 +1,4 @@
+import Filter from 'bad-words'
 import http from 'http'
 import * as process from 'process'
 import { Server } from 'socket.io'
@@ -13,6 +14,7 @@ const io = new Server(server, {
   },
 })
 
+type CallbackType = (message?: string) => void
 io.on('connection', (socket) => {
   console.log('client connected: ', socket.id)
   socket.on('disconnect', () => io.emit('message', 'A user has left'))
@@ -20,13 +22,30 @@ io.on('connection', (socket) => {
   // Send to everyone but current socket
   socket.broadcast.emit('message', 'A new user has joined!')
 
-  socket.on('message', (res) => io.emit('message', res))
+  socket.on('sendMessage', (res, callback: CallbackType) => {
+    const filter = new Filter()
+    if (filter.isProfane(res)) {
+      if (typeof callback === 'function') {
+        return callback('Profanity is not allowed')
+      } else {
+        return
+      }
+    }
 
-  socket.on('sendLocation', (res: { long: string; lat: string }) =>
-    socket.broadcast.emit(
-      'receiveLocation',
-      `https://google.com/maps?q=${res.lat},${res.long}`
-    )
+    io.emit('message', res)
+    if (typeof callback === 'function') callback()
+  })
+
+  socket.on(
+    'sendLocation',
+    (res: { long: string; lat: string }, callback: CallbackType) => {
+      socket.broadcast.emit(
+        'receiveLocation',
+        `https://google.com/maps?q=${res.lat},${res.long}`
+      )
+
+      if (typeof callback === 'function') callback('Location shared')
+    }
   )
 })
 
