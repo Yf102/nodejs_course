@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
         `https://google.com/maps?q=${res.lat},${res.long}`
       )
 
-      if (typeof callback === 'function') callback('Location shared')
+      if (typeof callback === 'function') callback('Location shared!')
     }
   )
 })

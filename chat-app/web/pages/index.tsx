@@ -41,15 +41,20 @@ const Home = ({}) => {
     })
   }, [socket])
 
+  const [msgSending, setMsgSending] = useState(false)
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setMsgSending(true)
+
     socket?.emit('sendMessage', inputRef?.current?.value, (error?: string) => {
+      setMsgSending(false)
       if (error) return console.log(error)
 
       console.log('Message Delivered')
     })
     if (inputRef?.current) {
       inputRef.current.value = ''
+      inputRef.current.focus()
     }
   }
 
@@ -58,6 +63,7 @@ const Home = ({}) => {
       return alert('Geolocation is not supported by your browser.')
     }
 
+    setMsgSending(true)
     navigator.geolocation.getCurrentPosition((position) => {
       // https://google.com/maps?q=42.69724254741613,23.352732746442026
       socket?.emit(
@@ -66,7 +72,10 @@ const Home = ({}) => {
           long: position.coords.longitude,
           lat: position.coords.latitude,
         },
-        (message?: string) => console.log(message)
+        (message?: string) => {
+          console.log(message)
+          setMsgSending(false)
+        }
       )
     })
   }
@@ -80,8 +89,10 @@ const Home = ({}) => {
               className='flex flex-col items-center justify-center'
               onSubmit={sendMessage}
             >
-              <Input type='text' ref={inputRef} />
+              <div className='mb-10 uppercase text-3xl'>Chat App</div>
+              <Input type='text' className='w-80' ref={inputRef} />
               <button
+                disabled={msgSending}
                 type='submit'
                 className={cn(
                   stylesHF['button-class'],
@@ -91,7 +102,8 @@ const Home = ({}) => {
               >
                 Send Message
               </button>
-              <div
+              <button
+                disabled={msgSending}
                 className={cn(
                   stylesHF['button-class'],
                   stylesHF['button-secondary-glow'],
@@ -100,7 +112,7 @@ const Home = ({}) => {
                 onClick={sendLocation}
               >
                 Send Location
-              </div>
+              </button>
             </form>
 
             <div className='flex flex-col items-center'>
