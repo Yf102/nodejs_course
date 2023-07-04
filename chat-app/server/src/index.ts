@@ -3,6 +3,7 @@ import http from 'http'
 import * as process from 'process'
 import { Server } from 'socket.io'
 import app from 'src/app'
+import { generateMessage } from 'src/utils/messages'
 
 const port = process.env.PORT
 
@@ -17,10 +18,12 @@ const io = new Server(server, {
 type CallbackType = (message?: string) => void
 io.on('connection', (socket) => {
   console.log('client connected: ', socket.id)
-  socket.on('disconnect', () => io.emit('message', 'A user has left'))
+  socket.on('disconnect', () =>
+    io.emit('message', generateMessage('A user has left'))
+  )
 
   // Send to everyone but current socket
-  socket.broadcast.emit('message', 'A new user has joined!')
+  socket.broadcast.emit('message', generateMessage('A new user has joined!'))
 
   socket.on('sendMessage', (res, callback: CallbackType) => {
     const filter = new Filter()
@@ -32,7 +35,7 @@ io.on('connection', (socket) => {
       }
     }
 
-    io.emit('message', res)
+    io.emit('message', generateMessage(res))
     if (typeof callback === 'function') callback()
   })
 
@@ -41,7 +44,7 @@ io.on('connection', (socket) => {
     (res: { long: string; lat: string }, callback: CallbackType) => {
       socket.broadcast.emit(
         'receiveLocation',
-        `https://google.com/maps?q=${res.lat},${res.long}`
+        generateMessage(`https://google.com/maps?q=${res.lat},${res.long}`)
       )
 
       if (typeof callback === 'function') callback('Location shared!')

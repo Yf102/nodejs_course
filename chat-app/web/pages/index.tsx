@@ -5,13 +5,15 @@ import stylesHF from '../components/HomeForm/HomeForm.module.scss'
 import Input from 'components/FormElements/Input'
 import { io, Socket } from 'socket.io-client'
 import { DefaultEventsMap } from '@socket.io/component-emitter'
+import moment from 'moment'
 
+type RespType = { text: string; createdAt: number }
 const Home = ({}) => {
   const [socket, setSocket] =
     useState<Socket<DefaultEventsMap, DefaultEventsMap>>()
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const [receivedMessage, setReceivedMessage] = useState<string[]>([])
+  const [receivedMessage, setReceivedMessage] = useState<RespType[]>([])
 
   useEffect(() => {
     setSocket(io(process.env.NEXT_PUBLIC_API || ''))
@@ -28,15 +30,16 @@ const Home = ({}) => {
 
     socket.on('disconnect', () => console.log('server disconnected'))
 
-    socket.on('message', (data: string) => {
+    socket.on('message', (data: RespType) => {
       setReceivedMessage((old) => {
         return [...old, data]
       })
     })
 
-    socket.on('receiveLocation', (data: string) => {
+    socket.on('receiveLocation', (data: RespType) => {
       setReceivedMessage((old) => {
-        return [...old, `{{location}}:${data}`]
+        data.text = `{{location}}:${data.text}`
+        return [...old, data]
       })
     })
   }, [socket])
@@ -117,7 +120,7 @@ const Home = ({}) => {
 
             <div className='flex flex-col items-center'>
               {receivedMessage.map((msg, index) => {
-                const location = msg.split('{{location}}:')[1]
+                const location = msg.text?.split('{{location}}:')[1]
                 if (location) {
                   return (
                     <a key={index} target='_blank' href={location}>
@@ -125,7 +128,11 @@ const Home = ({}) => {
                     </a>
                   )
                 }
-                return <div key={index}>{msg}</div>
+                return (
+                  <div key={index}>
+                    {moment(msg.createdAt).format('HH:mm')} - {msg.text}
+                  </div>
+                )
               })}
             </div>
           </div>
