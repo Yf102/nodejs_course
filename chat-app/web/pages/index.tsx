@@ -106,6 +106,7 @@ const Home = ({}) => {
                 Send Message
               </button>
               <button
+                type='button'
                 disabled={msgSending}
                 className={cn(
                   stylesHF['button-class'],
@@ -123,9 +124,12 @@ const Home = ({}) => {
                 const location = msg.text?.split('{{location}}:')[1]
                 if (location) {
                   return (
-                    <a key={index} target='_blank' href={location}>
-                      New Location
-                    </a>
+                    <div key={index}>
+                      <span>{moment(msg.createdAt).format('HH:mm')} - </span>
+                      <a target='_blank' href={location}>
+                        New Location
+                      </a>
+                    </div>
                   )
                 }
                 return (
