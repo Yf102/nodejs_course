@@ -8,3 +8,10 @@
     font-size: 14px;
     overflow: hidden;
 }
+
+.input-style {
+  @apply w-full h-full bg-white border-0;
+  @apply rounded-md outline-none pl-2;
+  @apply focus:outline-none mb-2 text-black;
+  max-height: 46px;
+}

@@ -1,10 +1,7 @@
 .button-class {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-    font-weight: 900;
-    width: 200px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 45%;
     &:active {
         transform: scale(1.075);
     }

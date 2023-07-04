@@ -4,9 +4,7 @@ import Input from 'components/FormElements/Input/index'
 
 describe('Input', () => {
   it('It renders Input with label', async () => {
-    const { asFragment } = render(
-      <Input label='Testing Label' placeholder='23.351723' />
-    )
+    const { asFragment } = render(<Input placeholder='23.351723' />)
     expect(screen.getByTestId('input-label-element')).toBeTruthy()
     expect(asFragment()).toMatchSnapshot()
   })
