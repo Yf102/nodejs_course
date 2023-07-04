@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Input from 'components/FormElements/Input'
-import styles from 'pages/index.module.scss'
+import styles from 'styles/Index.module.scss'
 import cn from 'classnames'
 import stylesHF from 'components/MessageForm/MessageForm.module.scss'
 import { io, Socket } from 'socket.io-client'
