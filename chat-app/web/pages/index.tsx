@@ -9,7 +9,7 @@ const Home = ({}) => {
     <div data-testid='home-element' className={styles.container}>
       <div className={stylesIndex['messages-form']}>
         {receivedMessage.map((msg, index) => {
-          return <TextMsg isMine={true} msg={msg} key={index} />
+          return <TextMsg type='mine' msg={msg} key={index} />
         })}
       </div>
 
