@@ -10,8 +10,10 @@
 }
 
 .input-style {
-  @apply w-full h-full bg-white border-0;
+  @apply bg-white border-0;
   @apply rounded-md outline-none pl-2;
   @apply focus:outline-none mb-2 text-black;
-  max-height: 46px;
+  max-height: 50px;
+  height: 50px;
+  width: calc(100% - 115px);
 }

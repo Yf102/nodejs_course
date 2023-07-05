@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Input from 'components/FormElements/Input'
 import styles from 'styles/Index.module.scss'
-import cn from 'classnames'
-import stylesHF from 'components/MessageForm/MessageForm.module.scss'
 import { io, Socket } from 'socket.io-client'
 import { DefaultEventsMap } from '@socket.io/component-emitter'
+import RoundedBtn from 'components/FormElements/RoundedBtn'
 
 export type RespType = { text: string; createdAt: number }
 type MessageFormType = { onChange?: (respMsg: RespType[]) => void }
@@ -86,31 +85,23 @@ const MessageForm = ({ onChange }: MessageFormType) => {
 
   return (
     <form className={styles['control-form']} onSubmit={sendMessage}>
-      <Input type='text' ref={inputRef} />
       <div className='flex justify-between w-full'>
-        <button
-          type='button'
-          disabled={msgSending}
-          className={cn(
-            stylesHF['button-class'],
-            stylesHF['button-secondary-glow'],
-            'rounded-md px-4'
-          )}
+        <RoundedBtn
           onClick={sendLocation}
-        >
-          Send Location
-        </button>
-        <button
+          className='px-4'
+          type='button'
+          src='/icons/location_icon.png'
           disabled={msgSending}
+          alt='Send Img'
+        />
+        <Input type='text' ref={inputRef} />
+        <RoundedBtn
+          className={'pr-2.5 pl-4'}
           type='submit'
-          className={cn(
-            stylesHF['button-class'],
-            stylesHF['button-primary'],
-            'rounded-md px-4'
-          )}
-        >
-          Send
-        </button>
+          src='/icons/send_icon.png'
+          disabled={msgSending}
+          alt='Send Img'
+        />
       </div>
     </form>
   )

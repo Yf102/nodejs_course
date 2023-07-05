@@ -1,9 +1,9 @@
-import React from 'react'
+import { DetailedHTMLProps, forwardRef, InputHTMLAttributes } from 'react'
 import styles from './Input.module.scss'
 import cn from 'classnames'
 
-type InputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
+type InputProps = DetailedHTMLProps<
+  InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 >
 
@@ -11,7 +11,7 @@ type InputCustomProps = {
   className?: string
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps & InputCustomProps>(
+const Input = forwardRef<HTMLInputElement, InputProps & InputCustomProps>(
   (props, ref) => {
     const { className } = props
 
