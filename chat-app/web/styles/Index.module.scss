@@ -119,11 +119,20 @@
 }
 
 .messages-form {
-  @apply w-full overflow-y-auto mb-1.5;
+  @apply w-full overflow-y-auto;
   height: 90%;
 }
 
 .control-form {
   @apply flex flex-col items-center justify-center px-2;
   height: 10%;
+}
+
+.join-button {
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7411764706);
+  color: black;
+  text-align: center;
 }
