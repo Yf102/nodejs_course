@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.193">
-  <testsuite name="Input" errors="0" failures="0" skipped="0" timestamp="2023-07-05T13:34:05" time="0.691" tests="1">
-    <testcase classname="Input It renders Input" name="Input It renders Input" time="0.034">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="1.266">
+  <testsuite name="Input" errors="0" failures="0" skipped="0" timestamp="2023-07-05T14:50:12" time="0.746" tests="1">
+    <testcase classname="Input It renders Input" name="Input It renders Input" time="0.037">
+    </testcase>
+  </testsuite>
+  <testsuite name="RoundedBtn" errors="0" failures="0" skipped="0" timestamp="2023-07-05T14:50:12" time="0.769" tests="2">
+    <testcase classname="RoundedBtn It renders RoundedBtn with image" name="RoundedBtn It renders RoundedBtn with image" time="0.049">
+    </testcase>
+    <testcase classname="RoundedBtn It renders RoundedBtn with text" name="RoundedBtn It renders RoundedBtn with text" time="0.013">
     </testcase>
   </testsuite>
 </testsuites>

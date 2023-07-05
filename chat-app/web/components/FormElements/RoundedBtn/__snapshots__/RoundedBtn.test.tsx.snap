@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoundedBtn It renders RoundedBtn with image 1`] = `
+<DocumentFragment>
+  <button
+    class="sendBtn"
+    data-testid="rounded-btn-element"
+    type="submit"
+  >
+    <img
+      alt="Send Button"
+      data-nimg="1"
+      decoding="async"
+      height="50"
+      loading="lazy"
+      src="/_next/image?url=%2Ficons%2Fsend_icon.png&w=128&q=75"
+      srcset="/_next/image?url=%2Ficons%2Fsend_icon.png&w=64&q=75 1x, /_next/image?url=%2Ficons%2Fsend_icon.png&w=128&q=75 2x"
+      style="color: transparent;"
+      width="50"
+    />
+  </button>
+</DocumentFragment>
+`;
+
+exports[`RoundedBtn It renders RoundedBtn with text 1`] = `
+<DocumentFragment>
+  <button
+    class="sendBtn"
+    data-testid="rounded-btn-element"
+    type="button"
+  >
+    Send
+  </button>
+</DocumentFragment>
+`;

@@ -26,6 +26,7 @@ const RoundedBtn = forwardRef<HTMLButtonElement, BtnProps & BtnCustomProps>(
     const { className, src, alt, text, onClick, type = 'submit' } = props
     return (
       <button
+        data-testid='rounded-btn-element'
         type={type}
         ref={ref}
         className={cn(className, styles.sendBtn)}
