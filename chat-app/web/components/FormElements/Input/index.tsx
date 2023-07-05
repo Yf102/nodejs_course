@@ -17,6 +17,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps & InputCustomProps>(
 
     return (
       <input
+        data-testid='input-element'
         ref={ref}
         {...props}
         className={cn(styles['input-style'], className)}

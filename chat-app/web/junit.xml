@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="1.253">
-  <testsuite name="Input" errors="0" failures="0" skipped="0" timestamp="2022-09-18T15:23:11" time="0.484" tests="2">
-    <testcase classname="Input It renders Input with label" name="Input It renders Input with label" time="0.019">
-    </testcase>
-    <testcase classname="Input It renders Input with NO label" name="Input It renders Input with NO label" time="0.005">
-    </testcase>
-  </testsuite>
-  <testsuite name="PartnerCard" errors="0" failures="0" skipped="0" timestamp="2022-09-18T15:23:12" time="0.255" tests="1">
-    <testcase classname="PartnerCard It renders PartnerCard" name="PartnerCard It renders PartnerCard" time="0.021">
-    </testcase>
-  </testsuite>
-  <testsuite name="EmptyCard" errors="0" failures="0" skipped="0" timestamp="2022-09-18T15:23:12" time="0.239" tests="1">
-    <testcase classname="EmptyCard It renders EmptyCard" name="EmptyCard It renders EmptyCard" time="0.011">
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.193">
+  <testsuite name="Input" errors="0" failures="0" skipped="0" timestamp="2023-07-05T13:34:05" time="0.691" tests="1">
+    <testcase classname="Input It renders Input" name="Input It renders Input" time="0.034">
     </testcase>
   </testsuite>
 </testsuites>

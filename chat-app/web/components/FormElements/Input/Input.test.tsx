@@ -3,16 +3,9 @@ import { render, screen } from 'tests/test-utils'
 import Input from 'components/FormElements/Input/index'
 
 describe('Input', () => {
-  it('It renders Input with label', async () => {
+  it('It renders Input', async () => {
     const { asFragment } = render(<Input placeholder='23.351723' />)
-    expect(screen.getByTestId('input-label-element')).toBeTruthy()
-    expect(asFragment()).toMatchSnapshot()
-  })
-
-  it('It renders Input with NO label', async () => {
-    const { asFragment } = render(<Input placeholder='23.351723' />)
-
-    expect(screen.queryByTestId('input-label-element')).not.toBeInTheDocument()
+    expect(screen.getByTestId('input-element')).toBeTruthy()
     expect(asFragment()).toMatchSnapshot()
   })
 })
