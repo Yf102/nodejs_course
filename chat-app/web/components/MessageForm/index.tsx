@@ -1,6 +1,8 @@
 import { DefaultEventsMap } from '@socket.io/component-emitter'
 import Input from 'components/FormElements/Input'
 import RoundedBtn from 'components/FormElements/RoundedBtn'
+import useSearchParams from 'hooks/useSearchParms'
+import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import styles from 'styles/Index.module.scss'
@@ -14,6 +16,14 @@ const MessageForm = ({ onChange }: MessageFormType) => {
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [receivedMessage, setReceivedMessage] = useState<RespType[]>([])
+  const params = useSearchParams()
+
+  const router = useRouter()
+  useEffect(() => {
+    if (params !== null && (!params.room || !params.username)) {
+      router.push('/')
+    }
+  }, [params, router])
 
   useEffect(
     () => onChange && onChange(receivedMessage),
