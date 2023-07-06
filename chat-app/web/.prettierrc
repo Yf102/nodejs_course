@@ -1,4 +1,8 @@
 {
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-tailwindcss"
+  ],
   "endOfLine": "auto",
   "arrowParens": "always",
   "bracketSpacing": true,

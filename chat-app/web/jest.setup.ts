@@ -1,6 +1,6 @@
-import 'whatwg-fetch'
 import { setupServer } from 'msw/node'
 import { handlers } from 'tests/handlers'
+import 'whatwg-fetch'
 
 jest.mock('next/router', () => require('next-router-mock'))
 

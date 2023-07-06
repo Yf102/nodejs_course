@@ -1,10 +1,6 @@
-import React, {
-  ButtonHTMLAttributes,
-  DetailedHTMLProps,
-  forwardRef,
-} from 'react'
-import Image from 'next/image'
 import cn from 'classnames'
+import Image from 'next/image'
+import { ButtonHTMLAttributes, DetailedHTMLProps, forwardRef } from 'react'
 import styles from './RoundedBtn.module.scss'
 
 type BtnProps = DetailedHTMLProps<

@@ -1,6 +1,5 @@
-import React from 'react'
-import { render, screen } from 'tests/test-utils'
 import RoundedBtn from 'components/FormElements/RoundedBtn/index'
+import { render, screen } from 'tests/test-utils'
 
 describe('RoundedBtn', () => {
   it('It renders RoundedBtn with image', async () => {

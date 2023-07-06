@@ -1,14 +1,14 @@
-import React, { useRef } from 'react'
 import Input from 'components/FormElements/Input'
+import { useRef } from 'react'
 import styles from 'styles/Index.module.scss'
 
 const Index = () => {
   const userNameRef = useRef<HTMLInputElement>(null)
   const roomRef = useRef<HTMLInputElement>(null)
   return (
-    <div className='flex flex-col max-w-sm mx-auto'>
-      <h1 className='font-bold text-3xl mb-10'>Join</h1>
-      <form className='flex flex-col items-center' action='/chat'>
+    <div className='mx-auto flex max-w-sm flex-col'>
+      <h1 className='mb-10 text-3xl font-bold'>Join</h1>
+      <form className=' flex flex-col items-center' action='/chat'>
         <label>Display Name</label>
         <Input
           name='username'

@@ -1,6 +1,6 @@
 import { render as rtlRender } from '@testing-library/react'
-import { getStoreForTesting, AppStore } from 'store/store'
 import { Provider } from 'react-redux'
+import { AppStore, getStoreForTesting } from 'store/store'
 
 function render(
   ui: React.ReactElement,

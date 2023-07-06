@@ -1,8 +1,10 @@
-import styles from 'styles/Index.module.scss'
-import React, { useState } from 'react'
 import MessageForm, { RespType } from 'components/MessageForm'
 import TextMsg from 'components/TextMsg'
-import stylesIndex from 'styles/Index.module.scss'
+import { useState } from 'react'
+import {
+  default as styles,
+  default as stylesIndex,
+} from 'styles/Index.module.scss'
 const Home = ({}) => {
   const [receivedMessage, setReceivedMessage] = useState<RespType[]>([])
   return (

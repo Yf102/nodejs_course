@@ -1,6 +1,5 @@
-import React from 'react'
-import { render, screen } from 'tests/test-utils'
 import Input from 'components/FormElements/Input/index'
+import { render, screen } from 'tests/test-utils'
 
 describe('Input', () => {
   it('It renders Input', async () => {

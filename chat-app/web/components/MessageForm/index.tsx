@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Input from 'components/FormElements/Input'
-import styles from 'styles/Index.module.scss'
-import { io, Socket } from 'socket.io-client'
 import { DefaultEventsMap } from '@socket.io/component-emitter'
+import Input from 'components/FormElements/Input'
 import RoundedBtn from 'components/FormElements/RoundedBtn'
+import React, { useEffect, useRef, useState } from 'react'
+import { io, Socket } from 'socket.io-client'
+import styles from 'styles/Index.module.scss'
 
 export type RespType = { text: string; createdAt: number }
 type MessageFormType = { onChange?: (respMsg: RespType[]) => void }
@@ -85,7 +85,7 @@ const MessageForm = ({ onChange }: MessageFormType) => {
 
   return (
     <form className={styles['control-form']} onSubmit={sendMessage}>
-      <div className='flex justify-between w-full'>
+      <div className='flex w-full justify-between'>
         <RoundedBtn
           onClick={sendLocation}
           className='px-4'
