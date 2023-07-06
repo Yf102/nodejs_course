@@ -103,7 +103,7 @@ const MessageForm = ({ onChange }: MessageFormType) => {
   const [msgSending, setMsgSending] = useState(false)
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!inputRef?.current?.value) return
+    if (!inputRef?.current?.value.trim()) return
     setMsgSending(true)
 
     socket?.emit('sendMessage', inputRef?.current?.value, () => {
