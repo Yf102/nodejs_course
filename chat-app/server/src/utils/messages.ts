@@ -1,7 +1,12 @@
-const generateMessage = (text: string, username: string) => {
+import { UserType } from 'src/utils/users'
+
+const generateMessage = (
+  text: string,
+  user: UserType & { sender?: 'server' }
+) => {
   return {
     text,
-    username,
+    user,
     createdAt: new Date().getTime(),
   }
 }

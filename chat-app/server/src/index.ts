@@ -16,7 +16,7 @@ const io = new Server(server, {
   },
 })
 
-type CallbackType = (message?: string) => void
+type CallbackType = (message?: string, userId?: string) => void
 io.on('connection', (socket) => {
   console.log('client connected: ', socket.id)
 
@@ -42,19 +42,22 @@ io.on('connection', (socket) => {
       // Send to everyone but current socket
       socket.broadcast
         .to(user.room)
-        .emit('message', generateMessage(`Has joined.`, user.username))
+        .emit(
+          'message',
+          generateMessage(`Has joined.`, { ...user, sender: 'server' })
+        )
 
       socket.on('disconnect', () => {
         const user = removeUser(socket.id)
         if (user) {
           io.to(user.room).emit(
             'message',
-            generateMessage(`Has left.`, user.username)
+            generateMessage(`Has left.`, { ...user, sender: 'server' })
           )
         }
       })
 
-      if (typeof callback === 'function') callback()
+      if (typeof callback === 'function') callback(undefined, user.id)
     }
   )
 
@@ -71,7 +74,7 @@ io.on('connection', (socket) => {
     const user = getUser(socket.id)
     if (!user) return
 
-    io.to(user.room).emit('message', generateMessage(res, user.username))
+    io.to(user.room).emit('message', generateMessage(res, user))
     if (typeof callback === 'function') callback()
   })
 
@@ -87,7 +90,7 @@ io.on('connection', (socket) => {
           'receiveLocation',
           generateMessage(
             `https://google.com/maps?q=${res.lat},${res.long}`,
-            user.username
+            user
           )
         )
 

@@ -6,8 +6,13 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import styles from 'styles/Index.module.scss'
+import { UserType } from 'types/User'
 
-export type RespType = { username: string; text: string; createdAt: number }
+export type RespType = {
+  user: UserType
+  text: string
+  createdAt: number
+}
 type MessageFormType = { onChange?: (respMsg: RespType[]) => void }
 
 const MessageForm = ({ onChange }: MessageFormType) => {
@@ -19,6 +24,7 @@ const MessageForm = ({ onChange }: MessageFormType) => {
   const params = useSearchParams()
   const router = useRouter()
   const [hasJoined, setHasJoined] = useState(false)
+  const myId = useRef<string>()
 
   useEffect(() => {
     if (!socket) return
@@ -32,10 +38,12 @@ const MessageForm = ({ onChange }: MessageFormType) => {
 
     if (!hasJoined) {
       setHasJoined(true)
-      socket?.emit('joinRoom', params, (error: string) => {
+      socket?.emit('joinRoom', params, (error: string, userId: string) => {
         if (error) {
-          console.log(error)
+          console.log('Join Error', error)
           router.push('/')
+        } else if (userId) {
+          myId.current = userId
         }
       })
     }
@@ -63,6 +71,14 @@ const MessageForm = ({ onChange }: MessageFormType) => {
 
     socket.on('message', (data: RespType) => {
       setReceivedMessage((old) => {
+        if (!data.user.sender) {
+          if (data.user.id === myId.current) {
+            data.user.sender = 'me'
+          } else {
+            data.user.sender = 'they'
+          }
+        }
+
         return [...old, data]
       })
     })
@@ -70,6 +86,14 @@ const MessageForm = ({ onChange }: MessageFormType) => {
     socket.on('receiveLocation', (data: RespType) => {
       setReceivedMessage((old) => {
         data.text = `{{location}}:${data.text}`
+        if (!data.user.sender) {
+          if (data.user.id === myId.current) {
+            data.user.sender = 'me'
+          } else {
+            data.user.sender = 'they'
+          }
+        }
+
         return [...old, data]
       })
     })

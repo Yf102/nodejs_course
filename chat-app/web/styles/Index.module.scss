@@ -119,7 +119,7 @@
 }
 
 .messages-form {
-  @apply w-full overflow-y-auto;
+  @apply w-full overflow-y-auto flex-col flex;
   height: 90%;
 }
 

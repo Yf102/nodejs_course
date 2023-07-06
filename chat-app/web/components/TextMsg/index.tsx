@@ -1,14 +1,14 @@
 import cn from 'classnames'
 import { RespType } from 'components/MessageForm'
 import moment from 'moment/moment'
+import { UserType } from 'types/User'
 import styles from './TextMsg.module.scss'
 
 type TextMsgType = {
   msg: RespType
-  type: 'mine' | 'theirs' | 'join'
 }
 
-const TextMsg = ({ msg, type }: TextMsgType) => {
+const TextMsg = ({ msg }: TextMsgType) => {
   const location = msg.text?.split('{{location}}:')[1]
 
   const _msg = location ? (
@@ -19,29 +19,34 @@ const TextMsg = ({ msg, type }: TextMsgType) => {
     msg.text
   )
 
-  const header = (createdAt: number, username: string) => {
+  const header = (createdAt: number, user: UserType) => {
     return (
-      <div>
-        {type !== 'join' && <span className='font-bold'>{username}</span>}
+      <div
+        className={cn({
+          'text-right': user.sender === 'they',
+        })}
+      >
+        <span className='font-bold'>{user.username}</span>
         <span className='ml-5 opacity-70'>
           {moment(createdAt).format('HH:mm')}
         </span>
       </div>
     )
   }
+
   return (
     <>
       <div
         className={cn(
           {
-            'float-right': type === 'theirs',
-            'mx-auto opacity-50': type === 'join',
+            'self-end': msg.user.sender === 'they',
+            'mx-auto opacity-50': msg.user.sender === 'server',
           },
           'mb-5 flex w-fit flex-col',
           styles.wrapper
         )}
       >
-        {header(msg.createdAt, msg.username)}
+        {header(msg.createdAt, msg.user)}
         {_msg}
       </div>
     </>

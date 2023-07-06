@@ -1,11 +1,12 @@
-const users: AddUserType[] = []
+const users: UserType[] = []
 
-type AddUserType = {
+export type UserType = {
   id: string
   username: string
   room: string
 }
-const addUser = ({ id, username, room }: AddUserType) => {
+
+const addUser = ({ id, username, room }: UserType) => {
   // Clean data
   username = username.trim().toLowerCase()
   room = room.trim().toLowerCase()
