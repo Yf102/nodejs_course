@@ -12,6 +12,7 @@ export type RespType = {
   user: UserType
   text: string
   createdAt: number
+  isLocation?: boolean
 }
 type MessageFormType = { onChange?: (respMsg: RespType[]) => void }
 
@@ -85,7 +86,7 @@ const MessageForm = ({ onChange }: MessageFormType) => {
 
     socket.on('receiveLocation', (data: RespType) => {
       setReceivedMessage((old) => {
-        data.text = `{{location}}:${data.text}`
+        data.isLocation = true
         if (!data.user.sender) {
           if (data.user.id === myId.current) {
             data.user.sender = 'me'

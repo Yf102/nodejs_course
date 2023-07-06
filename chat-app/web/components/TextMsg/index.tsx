@@ -9,16 +9,6 @@ type TextMsgType = {
 }
 
 const TextMsg = ({ msg }: TextMsgType) => {
-  const location = msg.text?.split('{{location}}:')[1]
-
-  const _msg = location ? (
-    <a target='_blank' href={location}>
-      New Location
-    </a>
-  ) : (
-    msg.text
-  )
-
   const header = (createdAt: number, user: UserType) => {
     return (
       <div
@@ -47,7 +37,13 @@ const TextMsg = ({ msg }: TextMsgType) => {
         )}
       >
         {header(msg.createdAt, msg.user)}
-        {_msg}
+        {msg.isLocation ? (
+          <a target='_blank' href={msg.text}>
+            New Location
+          </a>
+        ) : (
+          msg.text
+        )}
       </div>
     </>
   )
