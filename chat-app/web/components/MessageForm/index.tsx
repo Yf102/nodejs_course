@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import styles from 'styles/Index.module.scss'
 
-export type RespType = { text: string; createdAt: number }
+export type RespType = { username: string; text: string; createdAt: number }
 type MessageFormType = { onChange?: (respMsg: RespType[]) => void }
 
 const MessageForm = ({ onChange }: MessageFormType) => {
@@ -17,13 +17,29 @@ const MessageForm = ({ onChange }: MessageFormType) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [receivedMessage, setReceivedMessage] = useState<RespType[]>([])
   const params = useSearchParams()
-
   const router = useRouter()
+  const [hasJoined, setHasJoined] = useState(false)
+
   useEffect(() => {
-    if (params !== null && (!params.room || !params.username)) {
+    if (!socket) return
+    if (!router) return
+    if (params === null) return
+
+    if (!params.room || !params.username) {
       router.push('/')
+      return
     }
-  }, [params, router])
+
+    if (!hasJoined) {
+      setHasJoined(true)
+      socket?.emit('joinRoom', params, (error: string) => {
+        if (error) {
+          console.log(error)
+          router.push('/')
+        }
+      })
+    }
+  }, [hasJoined, params, router, socket])
 
   useEffect(
     () => onChange && onChange(receivedMessage),

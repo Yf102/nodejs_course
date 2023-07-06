@@ -3,7 +3,10 @@ import { RespType } from 'components/MessageForm'
 import moment from 'moment/moment'
 import styles from './TextMsg.module.scss'
 
-type TextMsgType = { msg: RespType; type: 'mine' | 'theirs' | 'join' }
+type TextMsgType = {
+  msg: RespType
+  type: 'mine' | 'theirs' | 'join'
+}
 
 const TextMsg = ({ msg, type }: TextMsgType) => {
   const location = msg.text?.split('{{location}}:')[1]
@@ -16,10 +19,10 @@ const TextMsg = ({ msg, type }: TextMsgType) => {
     msg.text
   )
 
-  const header = (createdAt: number) => {
+  const header = (createdAt: number, username: string) => {
     return (
       <div>
-        {type !== 'join' && <span className='font-bold'>Some User</span>}
+        {type !== 'join' && <span className='font-bold'>{username}</span>}
         <span className='ml-5 opacity-70'>
           {moment(createdAt).format('HH:mm')}
         </span>
@@ -38,7 +41,7 @@ const TextMsg = ({ msg, type }: TextMsgType) => {
           styles.wrapper
         )}
       >
-        {header(msg.createdAt)}
+        {header(msg.createdAt, msg.username)}
         {_msg}
       </div>
     </>

@@ -4,6 +4,7 @@ import * as process from 'process'
 import { Server } from 'socket.io'
 import app from 'src/app'
 import { generateMessage } from 'src/utils/messages'
+import { addUser, getUser, removeUser } from 'src/utils/users'
 
 const port = process.env.PORT
 
@@ -18,12 +19,44 @@ const io = new Server(server, {
 type CallbackType = (message?: string) => void
 io.on('connection', (socket) => {
   console.log('client connected: ', socket.id)
-  socket.on('disconnect', () =>
-    io.emit('message', generateMessage('A user has left'))
-  )
 
-  // Send to everyone but current socket
-  socket.broadcast.emit('message', generateMessage('A new user has joined!'))
+  socket.on(
+    'joinRoom',
+    (
+      { username, room }: { username: string; room: string },
+      callback: CallbackType
+    ) => {
+      const { error, user } = addUser({ id: socket.id, username, room })
+      if (error) {
+        if (typeof callback === 'function') callback(error)
+        return
+      }
+
+      if (!user) {
+        if (typeof callback === 'function') callback(`Couldn't add user`)
+        return
+      }
+
+      socket.join(user.room)
+
+      // Send to everyone but current socket
+      socket.broadcast
+        .to(user.room)
+        .emit('message', generateMessage(`Has joined.`, user.username))
+
+      socket.on('disconnect', () => {
+        const user = removeUser(socket.id)
+        if (user) {
+          io.to(user.room).emit(
+            'message',
+            generateMessage(`Has left.`, user.username)
+          )
+        }
+      })
+
+      if (typeof callback === 'function') callback()
+    }
+  )
 
   socket.on('sendMessage', (res, callback: CallbackType) => {
     const filter = new Filter()
@@ -35,17 +68,28 @@ io.on('connection', (socket) => {
       }
     }
 
-    io.emit('message', generateMessage(res))
+    const user = getUser(socket.id)
+    if (!user) return
+
+    io.to(user.room).emit('message', generateMessage(res, user.username))
     if (typeof callback === 'function') callback()
   })
 
   socket.on(
     'sendLocation',
     (res: { long: string; lat: string }, callback: CallbackType) => {
-      socket.broadcast.emit(
-        'receiveLocation',
-        generateMessage(`https://google.com/maps?q=${res.lat},${res.long}`)
-      )
+      const user = getUser(socket.id)
+      if (!user) return
+
+      socket.broadcast
+        .to(user.room)
+        .emit(
+          'receiveLocation',
+          generateMessage(
+            `https://google.com/maps?q=${res.lat},${res.long}`,
+            user.username
+          )
+        )
 
       if (typeof callback === 'function') callback('Location shared!')
     }
