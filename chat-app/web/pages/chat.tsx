@@ -15,8 +15,24 @@ const Home = ({}) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (refScroll.current) {
-      refScroll.current.scrollTop = refScroll.current.scrollHeight
+    if (refScroll.current && receivedMessage.length > 0) {
+      const newMsg = document.getElementById(
+        receivedMessage[receivedMessage.length - 1].user.id
+      )
+      if (!newMsg) return
+
+      const newMsgStyles = getComputedStyle(newMsg)
+      const newMsgMargin = parseInt(newMsgStyles.marginBottom)
+      const newMsgHeight = newMsg.offsetHeight + newMsgMargin
+
+      const visibleHeight = refScroll.current.offsetHeight
+      const containerHeight = refScroll.current.scrollHeight
+
+      const scrollOffset = refScroll.current.scrollTop + visibleHeight
+
+      if (containerHeight - newMsgHeight <= scrollOffset) {
+        refScroll.current.scrollTop = refScroll.current.scrollHeight
+      }
     }
   }, [receivedMessage])
 

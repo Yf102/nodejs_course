@@ -5,8 +5,6 @@ type UsersModalType = {
   users: UserType[]
 }
 const UsersModal = ({ users }: UsersModalType) => {
-  console.log(users)
-
   return (
     <Modal
       targetModal='users-modal'

@@ -27,6 +27,7 @@ const TextMsg = ({ msg }: TextMsgType) => {
   return (
     <>
       <div
+        id={msg.user.id}
         className={cn(
           {
             'self-end': msg.user.sender === 'they',
