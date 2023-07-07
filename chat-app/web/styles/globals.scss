@@ -1,6 +1,19 @@
 @import 'tailwindcss/base.css';
 @import 'tailwindcss/components.css';
 @import 'tailwindcss/utilities.css';
+@import './variables.scss';
+
+:root {
+  --primary: #{$purple};
+  --primary-mid: #{$primary-mid};
+  --primary-light: #{$primary-light};
+  --primary-dark: #{$primary-dark};
+  --primary-shade: #{$primary-shade};
+  --primary-shadow: #{$primary-shadow};
+  --secondary: #{$secondary};
+  --secondary-dark: #{$secondary-dark};
+  --error: #{$error};
+}
 
 html {
   --card-color-light: #570ca2;

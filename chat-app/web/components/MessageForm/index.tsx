@@ -1,6 +1,7 @@
 import { DefaultEventsMap } from '@socket.io/component-emitter'
 import Input from 'components/FormElements/Input'
 import RoundedBtn from 'components/FormElements/RoundedBtn'
+import UsersModal from 'components/MessageForm/Modal/UsersModal'
 import useSearchParams from 'hooks/useSearchParms'
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
@@ -26,7 +27,7 @@ const MessageForm = ({ onChange }: MessageFormType) => {
   const router = useRouter()
   const [hasJoined, setHasJoined] = useState(false)
   const myId = useRef<string>()
-
+  const [roomUsers, setRoomUsers] = useState<UserType[]>([])
   useEffect(() => {
     if (!socket) return
     if (!router) return
@@ -98,6 +99,13 @@ const MessageForm = ({ onChange }: MessageFormType) => {
         return [...old, data]
       })
     })
+
+    socket.on(
+      'roomData',
+      ({ room, users }: { room: string; users: UserType[] }) => {
+        setRoomUsers(users)
+      }
+    )
   }, [socket])
 
   const [msgSending, setMsgSending] = useState(false)
@@ -135,26 +143,29 @@ const MessageForm = ({ onChange }: MessageFormType) => {
   }
 
   return (
-    <form className={styles['control-form']} onSubmit={sendMessage}>
-      <div className='flex w-full justify-between'>
-        <RoundedBtn
-          onClick={sendLocation}
-          className='px-4'
-          type='button'
-          src='/icons/location_icon.png'
-          disabled={msgSending}
-          alt='Send Img'
-        />
-        <Input type='text' ref={inputRef} />
-        <RoundedBtn
-          className={'pr-2.5 pl-4'}
-          type='submit'
-          src='/icons/send_icon.png'
-          disabled={msgSending}
-          alt='Send Img'
-        />
-      </div>
-    </form>
+    <>
+      <form className={styles['control-form']} onSubmit={sendMessage}>
+        <div className='flex w-full justify-between'>
+          <RoundedBtn
+            onClick={sendLocation}
+            className='px-4'
+            type='button'
+            src='/icons/location_icon.png'
+            disabled={msgSending}
+            alt='Send Img'
+          />
+          <Input type='text' ref={inputRef} />
+          <RoundedBtn
+            className={'pl-4 pr-2.5'}
+            type='submit'
+            src='/icons/send_icon.png'
+            disabled={msgSending}
+            alt='Send Img'
+          />
+        </div>
+      </form>
+      <UsersModal users={roomUsers} />
+    </>
   )
 }
 

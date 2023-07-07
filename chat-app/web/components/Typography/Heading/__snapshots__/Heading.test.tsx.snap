@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with all props 1`] = `
+<DocumentFragment>
+  <h1
+    aria-label="test heading"
+    class="root text-3xl sm:text-4xl mb-5 font-semibold uppercase text-center"
+    data-test="test data"
+    id="1234"
+  >
+    Heading level 1
+  </h1>
+</DocumentFragment>
+`;
+
+exports[`renders correctly without optional props 1`] = `
+<DocumentFragment>
+  <h2
+    class="root text-2xl sm:text-3xl mb-4 font-semibold"
+  >
+    Heading level 2
+  </h2>
+</DocumentFragment>
+`;

@@ -4,7 +4,7 @@ import * as process from 'process'
 import { Server } from 'socket.io'
 import app from 'src/app'
 import { generateMessage } from 'src/utils/messages'
-import { addUser, getUser, removeUser } from 'src/utils/users'
+import { addUser, getUser, getUsersInRoom, removeUser } from 'src/utils/users'
 
 const port = process.env.PORT
 
@@ -22,11 +22,8 @@ io.on('connection', (socket) => {
 
   socket.on(
     'joinRoom',
-    (
-      { username, room }: { username: string; room: string },
-      callback: CallbackType
-    ) => {
-      const { error, user } = addUser({ id: socket.id, username, room })
+    (options: { username: string; room: string }, callback: CallbackType) => {
+      const { error, user } = addUser({ id: socket.id, ...options })
       if (error) {
         if (typeof callback === 'function') callback(error)
         return
@@ -47,6 +44,11 @@ io.on('connection', (socket) => {
           generateMessage(`Has joined.`, { ...user, sender: 'server' })
         )
 
+      io.to(user.room).emit('roomData', {
+        room: user.room,
+        users: getUsersInRoom(user.room),
+      })
+
       socket.on('disconnect', () => {
         const user = removeUser(socket.id)
         if (user) {
@@ -54,6 +56,10 @@ io.on('connection', (socket) => {
             'message',
             generateMessage(`Has left.`, { ...user, sender: 'server' })
           )
+          io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room),
+          })
         }
       })
 

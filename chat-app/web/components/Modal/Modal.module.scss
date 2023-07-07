@@ -1,0 +1,35 @@
+.root {
+  @apply z-50;
+}
+
+.content {
+  @apply sm:rounded-2xl;
+  @apply rounded-t-xl px-14 py-10 text-center bg-primary z-100 relative w-full max-w-lg md:h-auto;
+  overflow: hidden;
+  max-height: 100vh;
+}
+
+.slideAnimation {
+  @apply animate-in slide-in-from-bottom;
+}
+
+.modalClose {
+  @apply z-40 m-4 bg-white/10;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  @apply bg-black;
+}
+
+.scrollableContent {
+  @apply flex flex-col items-center justify-center overflow-y-auto;
+  max-height: 50vh;
+}

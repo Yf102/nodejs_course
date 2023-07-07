@@ -1,10 +1,12 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import { api } from 'services'
+import modalReducer from './slices/modalSlice'
 
 const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
+    modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
@@ -17,6 +19,7 @@ export const getStoreForTesting = (
     ...(preloadedState && { preloadedState }),
     reducer: {
       [api.reducerPath]: api.reducer,
+      modal: modalReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
