@@ -1,5 +1,5 @@
 .container {
-  @apply max-w-sm;
+  @apply max-w-sm md:max-w-2xl;
   margin: 0 auto;
   height: 100vh;
   padding: 10px 10px 0 10px;
@@ -118,9 +118,14 @@
   }
 }
 
+.room-header {
+  @apply text-center text-2xl;
+  height: 40px;
+}
+
 .messages-form {
   @apply w-full overflow-y-auto flex-col flex;
-  height: 90%;
+  height: calc(90% - 40px);
 }
 
 .control-form {
